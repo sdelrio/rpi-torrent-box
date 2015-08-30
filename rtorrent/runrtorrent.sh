@@ -6,7 +6,7 @@ if [ -f /rtorrent/.session/rtorrent.lock ]; then
 fi
 
 # Check config
-if [ -f /rtorrent/.rtorrent.rc ]; then
+if [ ! -f /rtorrent/.rtorrent.rc ]; then
     cp  /usr/local/src/.rtorrent.rc /rtorrent/.rtorrent.rc
 fi
 

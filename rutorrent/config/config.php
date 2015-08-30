@@ -25,7 +25,7 @@
         $overwriteUploadedTorrents = false;     // Overwrite existing uploaded torrents in profile/torrents directory or make unique name
 
         $topDirectory = '/rtorrent';                    // Upper available directory. Absolute path with trail slash.
-       $forbidUserSettings = false;
+        $forbidUserSettings = false;
 
         $scgi_port = 5000;
         $scgi_host = "127.0.0.1";
@@ -44,7 +44,7 @@
                 "curl"  => '/usr/local/bin/curl',                       // Something like /usr/bin/curl. If empty, will be found in PATH.
                 "gzip"  => '',                  // Something like /usr/bin/gzip. If empty, will be found in PATH.
                 "id"    => '',                  // Something like /usr/bin/id. If empty, will be found in PATH.
-                "stat"  => '',                  // Something like /usr/bin/stat. If empty, will be found in PATH.
+                "stat"  => '/usr/bin/stat',                  // Something like /usr/bin/stat. If empty, will be found in PATH.
         );
 
         $localhosts = array(                    // list of local interfaces
