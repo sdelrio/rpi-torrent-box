@@ -1,7 +1,7 @@
 
-# Docker conatainer stack: rtorrent (from sources), uTorrent + nginx + php-fpm 
+# Docker container stack: rtorrent (from sources), uTorrent + nginx + php-fpm 
 
-Designed to work on raspbery pi using `resin/rpi-raspbian:jessie` as base image.
+Designed to work on **Raspbery Pi** using `resin/rpi-raspbian:jessie` as base image. You ca also modify to `debian:jessie` to make it run on `x86_64`.
 
 The image install nginx to listen on 80 and 443, default user: user, default password: password
 
@@ -21,6 +21,8 @@ or if you want ot get docker hub image and not building it, use `sdelrio/rpi-tor
 ```
 docker run -dt --name rpi-torrent_01 -p 8080:80 -p 8443:443 -p 49160:49160/udp -p 49161:49161 -v ~/data:/rtorrent sdelrio/rpi-torrent-box
 ```
+
+The URL to access interfaces is `http://<IP>:<PORT>/rutorrent`.
 
 ## Build it
 
