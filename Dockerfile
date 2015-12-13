@@ -32,8 +32,8 @@ RUN apt-get update && \
 
 # Make rtorrent from sources
 
-ENV VER_LIBTORRENT 0.13.4
-ENV VER_RTORRENT 0.9.4
+ENV VER_LIBTORRENT 0.13.6
+ENV VER_RTORRENT 0.9.6
 ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion wget"
 
 WORKDIR /usr/local/src
