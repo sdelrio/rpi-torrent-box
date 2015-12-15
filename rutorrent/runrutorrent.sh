@@ -7,10 +7,10 @@ mkdir -p /rtorrent/{downloads,watch,.session,rutorrent/user-profiles,rutorrent/u
 chown -R www-data:www-data /rtorrent/{downloads,watch,.session,rutorrent/user-profiles,rutorrent/user-profiles/torrents}
 
 # Make .htaccess configurable by the user using the volume maped on /rtorrent
-if [ -f /rtorrent/.htaccess ]; then
-  cp -f /rtorrent/.htaccess /usr/share/nginx/html/rutorrent/.htpasswd
+if [ -f /rtorrent/.htpasswd ]; then
+  cp -f /rtorrent/.htpasswd /usr/share/nginx/html/rutorrent/.htpasswd
 else
-  cp -f /usr/share/nginx/html/rutorrent/.htpasswd /rtorrent/.htaccess 
+  cp -f /usr/share/nginx/html/rutorrent/.htpasswd /rtorrent/.htpasswd 
 fi
 
 if [ -d /usr/share/nginx/html/rutorrent/conf/ ]; then

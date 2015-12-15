@@ -32,11 +32,22 @@ docker build -t rpi-torrent-box .
 
 ## Modify login/password to access ruTorrent interface
 
-When runing image you use the volume `/rtorrent`, to modify `.htpasswd` you can add more users or just change using `>` instead `>>` in the redirection:
+When runing image you use the volume `/rtorrent`. Here you can set up or modify `.htpasswd` file.
+You can add more users or just change using `>` instead `>>` in the redirection:
+
+In the volume you used vefore with `-v ` (`~/data` in the example). You can execute:
 
 ```
-docker exec -t rpi-torrent_01 PASSWORD="my_password";SALT="$(openssl rand -base64 3)";SHA1=$(printf "$PASSWORD$SALT" | openssl dgst -binary -sha1 | sed 's#$#'"$SALT"'#' | base64);printf "my_user:{SSHA}$SHA1\n" >> /rtorrent/.htpasswd
+PASSWORD="my_password";SALT="$(openssl rand -base64 3)";SHA1=$(printf "$PASSWORD$SALT" | openssl dgst -binary -sha1 | sed 's#$#'"$SALT"'#' | base64);printf "my_user:{SSHA}$SHA1\n" >> ~data/.htpasswd
 ```
+
+Or you can run a command inside the container, if your container is named `my-rpi-torrent`
+
+```
+docker exec -t my-rpi-torrent1 PASSWORD="my_password";SALT="$(openssl rand -base64 3)";SHA1=$(printf "$PASSWORD$SALT" | openssl dgst -binary -sha1 | sed 's#$#'"$SALT"'#' | base64);printf "my_user:{SSHA}$SHA1\n" >> /rtorrent/.htpasswd
+```
+
+After changing `.htpasswd` file you must stop/start container. The initial script will look for this file and copy where nginx load it.
 
 ## ToDo:
 
