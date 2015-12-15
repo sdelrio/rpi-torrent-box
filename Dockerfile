@@ -93,6 +93,10 @@ EXPOSE 49161
 VOLUME /rtorrent
 
 #  Change the default login/password of ruTorrent
-RUN PASSWORD="password";SALT="$(openssl rand -base64 3)";SHA1=$(printf "$PASSWORD$SALT" | openssl dgst -binary -sha1 | sed 's#$#'"$SALT"'#' | base64);printf "user:{SSHA}$SHA1\n" >>  /usr/share/nginx/html/rutorrent/.htpasswd 
+
+ENV WEB_USER=user
+ENV WEB_PASS=password
+
+RUN PASSWORD="$WEB_PASS";SALT="$(openssl rand -base64 3)";SHA1=$(printf "$PASSWORD$SALT" | openssl dgst -binary -sha1 | sed 's#$#'"$SALT"'#' | base64);printf "$WEB_USER:{SSHA}$SHA1\n" >>  /usr/share/nginx/html/rutorrent/.htpasswd 
 
 CMD ["supervisord"]
