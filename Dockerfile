@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:jessie
+FROM debian:jessie
 
 USER root
 
