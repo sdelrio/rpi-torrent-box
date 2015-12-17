@@ -8,29 +8,30 @@ The image install nginx to listen on 80 and 443, default user: user, default pas
 The image is already on docker hub. You can use it without building image.
 
 
-## Run it
-
-There is a `run.sh` in the directory, you can cchange your ports and volume for your needs:
-
-```
-docker run -dt --name rpi-torrent_01 -p 8080:80 -p 8443:443 -p 49160:49160/udp -p 49161:49161 -v ~/data:/rtorrent rpi-torrent-box
-```
-
-or if you want ot get docker hub image and not building it, use `sdelrio/rpi-torrent-box`:
-
-```
-docker run -dt --name rpi-torrent_01 -p 8080:80 -p 8443:443 -p 49160:49160/udp -p 49161:49161 -v ~/data:/rtorrent sdelrio/rpi-torrent-box
-```
-
-The URL to access interfaces is `http://<IP>:<PORT>/rutorrent`.
-
 ## Build it
+
+There is a `buid.sh` and `run.sh` in the directory, you can change your ports and volume for your needs, also de user/password for the web login:
 
 ```
 docker build -t rpi-torrent-box .
 ```
 
-## Modify login/password to access ruTorrent interface
+## Run it
+
+The environment `NEW_USER` and `NEW_PASS` are used for the web access login. If not defined, `user` and `password` are the defaults.
+
+```
+docker run -dt --name rpi-torrent_01 \
+  -p 8080:80 -p 8443:443 -p 49160:49160/udp -p 49161:49161 
+  -v ~/data:/rtorrent 
+  -e NEW_USER=myuser
+  -e NEW_PASS=mypass
+  sdelrio/rpi-torrent-box
+```
+
+The URL to access interfaces is `http://<IP>:<PORT>`. No need to append `/rutorrent` on URL on this version.
+
+## Modify manually login/password on .htpassword to access ruTorrent interface
 
 When runing image you use the volume `/rtorrent`. Here you can set up or modify `.htpasswd` file.
 You can add more users or just change using `>` instead `>>` in the redirection:
@@ -57,3 +58,4 @@ For now is just a release version to see how Docker Hub works with a buil image.
 - Clean up
 - Disable logs or redirect to stdout
 - Reduce final image size
+- Make changes on ports at rtorrent config using environment variables. 
