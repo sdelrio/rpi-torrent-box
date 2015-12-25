@@ -18,6 +18,8 @@ docker build -t rpi-torrent-box .
 
 ## Run it
 
+### Environment vars to change web user/pass
+
 The environment `NEW_USER` and `NEW_PASS` are used for the web access login. If not defined, `user` and `password` are the defaults.
 
 ```
@@ -30,6 +32,19 @@ docker run -dt --name rpi-torrent_01 \
 ```
 
 The URL to access interfaces is `http://<IP>:<PORT>`. No need to append `/rutorrent` on URL on this version.
+
+### Environment vars to change rtorrent listening ports
+
+The environment `RTORRENT_DHT` and `RTORRENT_PORT` changes the rtorrent configuration to listen on those ports instead the default 49160 and 49161. For example, lets change it to 50000 and 50001:
+
+```
+docker run -dt --name rpi-torrent_01 \
+  -p 8080:80 -p 8443:443 -p 50000:50000/udp -p 50001:50001 
+  -v ~/data:/rtorrent 
+  -e RTORRENT_DHT=50000
+  -e RTORRENT_PORT=50001
+  sdelrio/rpi-torrent-box
+```
 
 ## Modify manually login/password on .htpassword to access ruTorrent interface
 
@@ -58,4 +73,3 @@ For now is just a release version to see how Docker Hub works with a buil image.
 - Clean up
 - Disable logs or redirect to stdout
 - Reduce final image size
-- Make changes on ports at rtorrent config using environment variables. 
