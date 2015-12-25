@@ -12,14 +12,14 @@ fi
 
 # change listening port if env $RTORRENT_PORT is set
 
-if [ -f $RTORRENT_PORT ]; then
-    sed -i 's/^port_range/port_range=${RTORRENT_PORT}-${RTORRENT_PORT}' /rtorrent/.rtorrent.rc
+if [ "$RTORRENT_PORT" ]; then
+    sed -i "s/^port_range.*$/port_range=${RTORRENT_PORT}-${RTORRENT_PORT}/" /rtorrent/.rtorrent.rc
 fi
 
 # change listening port if env $RTORRENT_DHT is set
 
-if [ -f $RTORRENT_DHT ]; then
-    sed -i 's/^dht_port/dht_port=${RTORRENT_DHT}' /rtorrent/.rtorrent.rc
+if [ "$RTORRENT_DHT" ]; then
+    sed -i "s/^dht_port.*$/dht_port=${RTORRENT_DHT}/" /rtorrent/.rtorrent.rc
 fi
 
 # Run rTorrent 
