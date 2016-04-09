@@ -66,6 +66,7 @@ COPY rutorrent/runrutorrent.sh /usr/local/src/runrutorrent.sh
 
 COPY nginx/config/rutorrent.conf     /etc/nginx/sites-enabled/default
 COPY nginx/config/rutorrent-ssl.conf /etc/nginx/sites-enabled/tls
+COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 
 # Configure rtorrent user
 
