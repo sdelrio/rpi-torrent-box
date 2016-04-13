@@ -8,11 +8,14 @@ VERSION=$2
 
 if [ -f ./Dockerfile ]; then
  docker_dir=./
+else
+ echo "Dockerfile not found."
+ exit 1
 fi
 
 if [ -z $VERSION ]; then
   VERSION=latest
-i
+fi
 
 if [ -z $APPLICATION ]; then
   APPLICATION=rpi-rtorrent-box
