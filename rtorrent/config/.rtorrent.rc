@@ -127,5 +127,6 @@ peer_exchange = yes
 #log.open_file = "rtorrent", /var/log/rtorrent.log
 #log.add_output = "debug", "rtorrent"
 log.open_file = "rtorrent.log", /dev/stdout
-log.add_output = "debug", "rtorrent.log"
-
+log.add_output = "error", "rtorrent.log"
+http_capath= /rtorrent/ssl
+http_cacert= /rtorrent/ssl/certificates.pem
