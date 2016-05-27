@@ -73,6 +73,11 @@ COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 RUN useradd -d /home/rtorrent -m -s /bin/bash rtorrent
 RUN chown -R rtorrent:rtorrent /home/rtorrent
 
+# Geo Codes
+
+RUN curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip GeoLiteCity.dat.gz && \
+    mkdir /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
+
 # Cleanup repositories
 
 RUN rm -rf /var/lib/apt/lists/*
