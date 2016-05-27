@@ -1,3 +1,6 @@
+[![](https://img.shields.io/docker/stars/sdelrio/rpi-torrent-box.svg)](https://hub.docker.com/r/sdelrio/rpi-torrent-box 'DockerHub')
+
+[![](https://img.shields.io/docker/pulls/sdelrio/rpi-torrent-box.svg)](https://hub.docker.com/r/sdelrio/rpi-torrent-box 'DockerHub')
 
 # Docker container stack: rtorrent (from sources), uTorrent + nginx + php-fpm 
 
