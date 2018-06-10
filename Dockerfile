@@ -1,7 +1,6 @@
-ARG BASE_IMAGE=resin/rpi-raspbian
-ARG BASE_IMAGE_TAG=jessie
+ARG BASE_IMAGE=resin/rpi-raspbian:jessie
 
-FROM $BASE_IMAGE:$BASE_IMAGE_TAG
+FROM $BASE_IMAGE
 
 USER root
 
