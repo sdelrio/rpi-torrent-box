@@ -1,4 +1,7 @@
-FROM resin/rpi-raspbian:jessie
+ARG BASE_IMAGE=resin/rpi-raspbian
+ARG BASE_IMAGE_TAG=jessie
+
+FROM $BASE_IMAGE:$BASE_IMAGE_TAG
 
 USER root
 
@@ -20,6 +23,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     nginx \
     php5-cli \
     php5-fpm \
+    geoip-database \
     php5-geoip && \
     update-rc.d nginx remove && \
     openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout /etc/ssl/private/rutorrent.key -out /etc/ssl/private/rutorrent.crt -subj /CN=rutorrent && \
@@ -32,6 +36,7 @@ RUN apt-get update && \
 
 # Make rtorrent from sources
 
+ENV VERSION 1.20
 ENV VER_LIBTORRENT 0.13.6
 ENV VER_RTORRENT 0.9.6
 ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion wget"
