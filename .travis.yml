@@ -1,8 +1,8 @@
 sudo: required
 services: docker
 before_install:
-    - sudo apt-get update
-    - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+#    - sudo apt-get update
+#    - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
     - docker --version # for verification
 language: generic
 notifications:
@@ -25,6 +25,16 @@ jobs:
       - echo $TAG
       # x86 build
       - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile .
+      - >
+        if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+          docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+          docker tag $IMAGENAME_X86 $IMAGENAME_X8:$TAG
+          docker push $IMAGENAME_X86:$TAG
+          docker push $IMAGENAME_X86
+        fi
+
+    - script:
+      - echo $TAG
       # prepare qemu for arm build
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
       # build arm image
@@ -32,10 +42,7 @@ jobs:
       - >
         if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
           docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-          docker tag $IMAGENAME_X86 $IMAGENAME_X8:$TAG
-          docker push $IMAGENAME_X86:$TAG
-          docker push $IMAGENAME_X86
           docker tag $IMAGENAME_ARM $IMAGENAME_ARM:$TAG
           docker push $IMAGENAME_ARM:$TAG
-          docker push $IMAGENAME_AR
+          docker push $IMAGENAME_ARM
         fi
