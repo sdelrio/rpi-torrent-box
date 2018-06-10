@@ -23,7 +23,7 @@ jobs:
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker tag $IMAGENAME_X86 $IMAGENAME_X8:$TAG
+        docker tag $IMAGENAME_X86 $IMAGENAME_X86:$TAG
         docker push $IMAGENAME_X86:$TAG
         docker push $IMAGENAME_X86
       fi
