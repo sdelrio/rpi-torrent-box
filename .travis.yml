@@ -16,13 +16,10 @@ jobs:
     env:
     - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
     - BASE_X86=debian:jessie
-    - BASE_ARM=resin/rpi-raspbian:jessie
-    - IMAGENAME_ARM=sdelrio/rpi-torrent-box
     - IMAGENAME_X86=sdelrio/rtorrent-box
     script:
     - echo $TAG
-    - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile
-      .
+    - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile .
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
@@ -30,11 +27,14 @@ jobs:
         docker push $IMAGENAME_X86:$TAG
         docker push $IMAGENAME_X86
       fi
-  - script:
+  - env:
+    - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
+    - BASE_ARM=resin/rpi-raspbian:jessie
+    - IMAGENAME_ARM=sdelrio/rpi-torrent-box
+    script:
     - echo $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker build --build-arg BASE_IMAGE=$BASE_ARM -t $IMAGENAME_ARM -f Dockerfile
-      .
+    - docker build --build-arg BASE_IMAGE=$BASE_ARM -t $IMAGENAME_ARM -f Dockerfile .
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
