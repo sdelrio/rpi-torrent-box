@@ -7,42 +7,38 @@ before_install:
 language: generic
 notifications:
   slack:
-    rooms:
-      secure: x1Xxi30dKk26LUWSASi5SiQvlQtTqDW5zBnZNh6lV1fSG3octj23s4FwT/pJ/j2aqNlLUq1GtXC/jssCSeCtzEovAv4XXNAqUqFP0TUfWvOWuxmUGTechxgVH66TD8oAhEuXN+LG1Vgq75uCyTkn/IBFHqOZfWXzQSpSe6XLSvYc/PF4SfVUlMV8ODFcX0ONo5kNOScpxCYCoT0DnDyw+6GreE4OAhZYhsxRwS7mCKf4c75BFHsoMKVHaxQLl1IMNXOM81X6wwH420341XAmDJ5XeUp4I+6JxNKV20OJ0WqmgWEs94XYy7koY19LRDsZAHsE9OBae+L6/4uxAIGx8pPsuBrakO8bYT0vG3JIkQZQLbYthvNTK5WFR3xjn2ARec2wLGI1icO7hY8WaPkaU7DGququOIfG3VQPKqND8WbijoEWO9eyFLvL86nqNiHlbsfdunD5qwArn1Hb+MP+a9H3veyrzyKam6S26R8SqObFD8V3Rlvie/tjQUZtIb39tsy4goMBa91vo7WLTo/pbK9GMJzSrOYjZs+TeiUWCp9VFlAUKXM3IYn+7M31NToPD9E+RFIChmQmFIOBE4xlNxow6aQxLRr0r4ET7EhFja7dwGj/zwhuqgfz1mrIKoWzsxXBmz7rTTW5mAJNpPK1QISFDXctvPry2F9Y03dXOPU=
+    secure: Uj5nbgEuxQqGW1ScLQDLshvlEUouHLmU94v6WyKbgOg4KjJBftQS2myyr7gePTYjpHpjE6COt1+ua1fhWakidy7sZQ4a3xOoHplwG3+vWb2XUmvJ31k5gtXs8/SXwM3sCs217IPRwq78G4AvSfdcB912DQQb10oNeGeu+qpZFqN2mQZJug+X/z6J4C4ckpGEOIqpPsqhk89qpvh88RinKeHwHE9/Qb/iwTaUbyu3fzLs+IGAWpZC1ogt68Y1ZRwRrQ9BbiugtvmlNhNg71jma50DMT9GRSkz0zeLva4Ne9GMHJ1EvaAiHfu7y2ppkJwn6ddZruaMRluzY2OvXv86F0f5bMYXSd6GfRqThhDszqkEdHkxhA/hZApxJD6AaRdTwDjR+pH6ihsSapxL7aWO8Y7Nh8rkIz+63wpemUt0Y/LL+d7hNyz02L94e1AbeByqQhZizZRovrZcnifhw54X3jCjdH4TdgAhc7SYBAdh5TYMJgqKoDQBrsuDx0ap1NDFX97U90D8FWoAcWyMoUzFsMGYySzg6QGXznKsUuXlc16wJHU8wSuF3m5AGDkVsmgNF1QrdRI5S9ieCjNhaPHOoUJLZSSIpEMVeHaLkPZDc/ECrCD6bztatBWh8pMMSymRuzmRKVZwQjVFfJ61X70euoUjU1BIqEc6uwTqTl2ni04=
     on_success: always
     on_failure: always
 jobs:
   include:
-    - stage: build docker images
-      env:
-        - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
-        - BASE_X86=debian:jessie
-        - BASE_ARM=resin/rpi-raspbian:jessie
-        - IMAGENAME_ARM=sdelrio/rpi-torrent-box
-        - IMAGENAME_X86=sdelrio/rtorrent-box
-
-      script:
-      - echo $TAG
-      # x86 build
-      - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile .
-      - >
-        if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-          docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-          docker tag $IMAGENAME_X86 $IMAGENAME_X8:$TAG
-          docker push $IMAGENAME_X86:$TAG
-          docker push $IMAGENAME_X86
-        fi
-
-    - script:
-      - echo $TAG
-      # prepare qemu for arm build
-      - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      # build arm image
-      - docker build --build-arg BASE_IMAGE=$BASE_ARM -t $IMAGENAME_ARM -f Dockerfile .
-      - >
-        if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-          docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-          docker tag $IMAGENAME_ARM $IMAGENAME_ARM:$TAG
-          docker push $IMAGENAME_ARM:$TAG
-          docker push $IMAGENAME_ARM
-        fi
+  - stage: build docker images
+    env:
+    - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
+    - BASE_X86=debian:jessie
+    - BASE_ARM=resin/rpi-raspbian:jessie
+    - IMAGENAME_ARM=sdelrio/rpi-torrent-box
+    - IMAGENAME_X86=sdelrio/rtorrent-box
+    script:
+    - echo $TAG
+    - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile
+      .
+    - |
+      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+        docker tag $IMAGENAME_X86 $IMAGENAME_X8:$TAG
+        docker push $IMAGENAME_X86:$TAG
+        docker push $IMAGENAME_X86
+      fi
+  - script:
+    - echo $TAG
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - docker build --build-arg BASE_IMAGE=$BASE_ARM -t $IMAGENAME_ARM -f Dockerfile
+      .
+    - |
+      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+        docker tag $IMAGENAME_ARM $IMAGENAME_ARM:$TAG
+        docker push $IMAGENAME_ARM:$TAG
+        docker push $IMAGENAME_ARM
+      fi
