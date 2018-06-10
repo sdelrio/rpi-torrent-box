@@ -80,7 +80,7 @@ RUN chown -R rtorrent:rtorrent /home/rtorrent
 # Geo Codes
 
 RUN curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip GeoLiteCity.dat.gz && \
-    mkdir /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
+    mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
 
 # Cleanup repositories
 
