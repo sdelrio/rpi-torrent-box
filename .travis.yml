@@ -15,6 +15,7 @@ jobs:
   include:
     - stage: build docker images
       env:
+        - DOCKER_CONTENT_TRUST=1
         - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
         - BASE_X86=debian:jessie
         - BASE_ARM=resin/rpi-raspbian:jessie
