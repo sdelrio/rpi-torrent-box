@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 # Install tools, and packages for rutorrent plugins
 
 RUN apt-get update && \
-    apt-get install -y --force-yes unzip unrar-free mediainfo curl wget supervisor
+    apt-get install -y --force-yes unzip unrar-free mediainfo curl wget supervisor sox
 
 # Make rtorrent from sources
 
