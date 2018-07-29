@@ -13,7 +13,7 @@ make install && \
 cd .. && \
 rm -rf curl-* && \
 ldconfig && \
-svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/super_stable/ xmlrpc-c && \
+svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ xmlrpc-c && \
 cd xmlrpc-c && \
 ./configure --enable-libxml2-backend --disable-abyss-server --disable-cgi-server && \
 make -j -l2 && \
