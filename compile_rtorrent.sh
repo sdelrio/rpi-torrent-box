@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-env
 pwd
 
 # PREPARE NEEDED LIBS

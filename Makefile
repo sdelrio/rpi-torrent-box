@@ -32,8 +32,9 @@ builder:
 curl:
 	@set -e;
 	echo CURL_VERSION=$(CURL_VERSION)
-	curl -z -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz
-	tar xzf .tmp/curl.tar.gz -C ./build/
+	export TMPFILE=.tmp/curl.tar.gz
+	test ! -s $(TMPFILE) && curl -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz && \
+	tar xzf $(TMPFILE) -C ./build/ || echo $(TMPFILE) already exists
 	docker run -e CURL_VERSION=$(CURL_VERSION) -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_curl.sh
 	ls -l $(PWD)/build/curl-7.39.0/src/curl
 
@@ -47,16 +48,15 @@ xmlrpc:
 libtorrent:
 	@set -e;
 	echo VER_LIBTORRENT=$(VER_LIBTORRENT)
-	curl -z -s -q -L -o .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz https://github.com/rakshasa/libtorrent/archive/v$(VER_LIBTORRENT).tar.gz
-	tar xzf .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz -C ./build/
-
+	test ! -s ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" && curl -s -q -L -o .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz https://github.com/rakshasa/libtorrent/archive/v$(VER_LIBTORRENT).tar.gz && \
+	tar xzf .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz -C ./build/ || echo .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz alredy exists
 	docker run -ti -e VER_LIBTORRENT=$(VER_LIBTORRENT) -v $(PWD)/build/:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_libtorrent.sh
 
 .PHONY: rtorrent
 rtorrent:
 	@set -e;
 	echo VER_RTORRENT=$(VER_RTORRENT)
-	curl -z -s -q -L -o .tmp/rtorrent-$(VER_RTORRENT).tar.gz https://github.com/rakshasa/rtorrent/releases/download/v$(VER_RTORRENT)/rtorrent-$(VER_RTORRENT).tar.gz
+	test ! -s ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" && curl -s -q -L -o .tmp/rtorrent-$(VER_RTORRENT).tar.gz https://github.com/rakshasa/rtorrent/releases/download/v$(VER_RTORRENT)/rtorrent-$(VER_RTORRENT).tar.gz || echo ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" already exists
 	tar xzf .tmp/rtorrent-$(VER_RTORRENT).tar.gz -C ./build/
 
 	docker run \
