@@ -4,8 +4,9 @@ before_install:
 #    - sudo apt-get update
 #    - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
     - docker --version # for verification
+    - sudo apt-get install -y make
+    - whoami
 language: generic
-install: make
 notifications:
   slack:
     secure: Uj5nbgEuxQqGW1ScLQDLshvlEUouHLmU94v6WyKbgOg4KjJBftQS2myyr7gePTYjpHpjE6COt1+ua1fhWakidy7sZQ4a3xOoHplwG3+vWb2XUmvJ31k5gtXs8/SXwM3sCs217IPRwq78G4AvSfdcB912DQQb10oNeGeu+qpZFqN2mQZJug+X/z6J4C4ckpGEOIqpPsqhk89qpvh88RinKeHwHE9/Qb/iwTaUbyu3fzLs+IGAWpZC1ogt68Y1ZRwRrQ9BbiugtvmlNhNg71jma50DMT9GRSkz0zeLva4Ne9GMHJ1EvaAiHfu7y2ppkJwn6ddZruaMRluzY2OvXv86F0f5bMYXSd6GfRqThhDszqkEdHkxhA/hZApxJD6AaRdTwDjR+pH6ihsSapxL7aWO8Y7Nh8rkIz+63wpemUt0Y/LL+d7hNyz02L94e1AbeByqQhZizZRovrZcnifhw54X3jCjdH4TdgAhc7SYBAdh5TYMJgqKoDQBrsuDx0ap1NDFX97U90D8FWoAcWyMoUzFsMGYySzg6QGXznKsUuXlc16wJHU8wSuF3m5AGDkVsmgNF1QrdRI5S9ieCjNhaPHOoUJLZSSIpEMVeHaLkPZDc/ECrCD6bztatBWh8pMMSymRuzmRKVZwQjVFfJ61X70euoUjU1BIqEc6uwTqTl2ni04=
@@ -18,7 +19,7 @@ jobs:
     - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     script:
     - echo VERSION TAG $TAG
-    - make all
+    - make init curl xmlrpc libtorrent rtorrent pack
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
