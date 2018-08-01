@@ -24,8 +24,11 @@ pwd
 
 cd rtorrent-$VER_RTORRENT
 ./autogen.sh
-./configure --with-xmlrpc-c --with-ncurses
-make -j -l2
+echo - Configure libtorrent
+./configure --quiet --enable-silent-rules --with-xmlrpc-c --with-ncurses
+echo - Begin compile libtorrent
+make -j -l2 V=0
+echo - Finish compile libtorrent
 make install
 ls -la /usr/local/lib
 ls -la /usr/local/bin

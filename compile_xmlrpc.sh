@@ -1,9 +1,10 @@
 #!/bin/bash
 set -e
 
-echo - Begin compiling xmlrpc
 cd xmlrpc-c
-./configure --enable-libxml2-backend --disable-abyss-server --disable-cgi-server
-make
+echo - Configure compiling xmlrpc
+./configure --quiet --enable-silent-rules --enable-libxml2-backend --disable-abyss-server --disable-cgi-server
+echo - Begin compiling xmlrpc
+make V=0
 echo - Finish compiling xmlrpc
 

@@ -41,6 +41,7 @@ curl:
 .PHONY: xmlrpc
 xmlrpc:
 	@set -e;
+	@echo Begin compiling xmlrpc
 	svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ ./build/xmlrpc-c
 	docker run -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_xmlrpc.sh
 
@@ -56,7 +57,7 @@ libtorrent:
 rtorrent:
 	@set -e;
 	echo VER_RTORRENT=$(VER_RTORRENT)
-	test ! -s ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" && curl -s -q -L -o .tmp/rtorrent-$(VER_RTORRENT).tar.gz https://github.com/rakshasa/rtorrent/releases/download/v$(VER_RTORRENT)/rtorrent-$(VER_RTORRENT).tar.gz || echo ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" already exists
+	test ! -s ".tmp/rtorrent-$(VER_RTORRENT).tar.gz" && curl -s -q -L -o .tmp/rtorrent-$(VER_RTORRENT).tar.gz https://github.com/rakshasa/rtorrent/releases/download/v$(VER_RTORRENT)/rtorrent-$(VER_RTORRENT).tar.gz || echo ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" already exists
 	tar xzf .tmp/rtorrent-$(VER_RTORRENT).tar.gz -C ./build/
 
 	docker run \
