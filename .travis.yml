@@ -17,14 +17,14 @@ jobs:
   - stage: build docker images
     env:
     - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rtorrent-box
     script:
     - echo VERSION TAG $TAG
     - make init curl xmlrpc libtorrent rtorrent pack
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker tag  $PACK_IMAGENAME:$TAG $PACK_IMAGENAME:latest
-        docker push $PACK_IMAGENAME:$TAG
+        docker push $PACK_IMAGENAME:v$TAG
         docker push $PACK_IMAGENAME:latest
       fi
   - env:
@@ -40,7 +40,6 @@ jobs:
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker tag  $PACK_IMAGENAME:$TAG $PACK_IMAGENAME:latest
-        docker push $PACK_IMAGENAME:$TAG
+        docker push $PACK_IMAGENAME:v$TAG
         docker push $PACK_IMAGENAME:latest
       fi
