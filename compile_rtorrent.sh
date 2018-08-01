@@ -6,17 +6,17 @@ pwd
 # PREPARE NEEDED LIBS
 
 echo - Installing curl
-cd curl-$CURL_VERSION && make install
+cd curl-$CURL_VERSION && make install V=0
 cd ..
 pwd
 
 echo - Installing xmlrpc
-cd xmlrpc-c && make install
+cd xmlrpc-c && make install V=0
 cd ..
 pwd
 
 echo - Installing libtorrent
-cd libtorrent-$VER_LIBTORRENT && make install
+cd libtorrent-$VER_LIBTORRENT && make install V=0
 cd ..
 pwd
 
@@ -29,7 +29,7 @@ echo - Configure libtorrent
 echo - Begin compile libtorrent
 make -j -l2 V=0
 echo - Finish compile libtorrent
-make install
+make install V=0
 ls -la /usr/local/lib
 ls -la /usr/local/bin
 ldconfig
