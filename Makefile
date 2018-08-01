@@ -6,6 +6,7 @@ CURL_VERSION = $(shell grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print
 VER_LIBTORRENT = $(shell grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $$NF}')
 VER_RTORRENT = $(shell grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $$NF}')
 VER_BOX = $(shell grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $$NF}')
+TMP_CURLFILE = ".tmp/curl.tar.gz"
 
 # If nothing was specified, run all targets as if in a fresh clone
 .PHONY: all
@@ -32,9 +33,8 @@ builder:
 curl:
 	@set -e;
 	echo CURL_VERSION=$(CURL_VERSION)
-	export TMPFILE=.tmp/curl.tar.gz
-	test ! -s $(TMPFILE) && curl -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz && \
-	tar xzf $(TMPFILE) -C ./build/ || echo $(TMPFILE) already exists
+	test ! -s $(TMP_CURLFILE) && curl -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz && \
+	tar xzf $(TMP_CURLFILE) -C ./build/ || echo $(TMP_CURLFILE) already exists
 	docker run -e CURL_VERSION=$(CURL_VERSION) -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_curl.sh
 	ls -l $(PWD)/build/curl-7.39.0/src/curl
 
