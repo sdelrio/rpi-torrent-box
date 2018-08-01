@@ -14,31 +14,31 @@ jobs:
   include:
   - stage: build docker images
     env:
-    - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
-    - BASE_X86=debian:jessie
-    - IMAGENAME_X86=sdelrio/rtorrent-box
+    - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     script:
-    - echo $TAG
+    - echo VERSION TAG $TAG
     - docker build --build-arg BASE_IMAGE=$BASE_X86 -t $IMAGENAME_X86 -f Dockerfile .
+    - make all
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker tag $IMAGENAME_X86 $IMAGENAME_X86:$TAG
-        docker push $IMAGENAME_X86:$TAG
-        docker push $IMAGENAME_X86
+        docker tag  $PACK_IMAGENAME:$TAG $PACK_IMAGENAME:latest
+        docker push $PACK_IMAGENAME:$TAG
+        docker push $PACK_IMAGENAME:latest
       fi
   - env:
-    - TAG=$(grep "ENV VERSION" Dockerfile | awk 'NF>1{print $NF}')
-    - BASE_ARM=resin/rpi-raspbian:jessie
-    - IMAGENAME_ARM=sdelrio/rpi-torrent-box
+    - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rpi-torrent-box
+    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
-    - echo $TAG
+    - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker build --build-arg BASE_IMAGE=$BASE_ARM -t $IMAGENAME_ARM -f Dockerfile .
+    - make all
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker tag $IMAGENAME_ARM $IMAGENAME_ARM:$TAG
-        docker push $IMAGENAME_ARM:$TAG
-        docker push $IMAGENAME_ARM
+        docker tag  $PACK_IMAGENAME:$TAG $PACK_IMAGENAME:latest
+        docker push $PACK_IMAGENAME:$TAG
+        docker push $PACK_IMAGENAME:latest
       fi

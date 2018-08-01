@@ -4,19 +4,21 @@
 
 # Docker container stack: rtorrent (from sources), uTorrent + nginx + php-fpm 
 
-Designed to work on **Raspbery Pi** using `resin/rpi-raspbian:jessie` as base image. You ca also modify to `debian:jessie` to make it run on `x86_64`.
+Designed to work on **Raspbery Pi** and `x86_64`.
+
+The image is already on docker hub. You can use it without building image:
+- `sdelrio/rtorrent-box` for `x86_64`
+- `sdelrio/rpi-torrent-box` for `arm` (Raspberry Pi).
 
 The image install nginx to listen on 80 and 443, default user: user, default password: password
-
-The image is already on docker hub. You can use it without building image.
 
 
 ## Build it
 
-There is a `buid.sh` and `run.sh` in the directory, you can change your ports and volume for your needs, also de user/password for the web login:
+There is a `Makefile` in the directory, you can use the gccbuilder from docker hub or make your own (`make gccbuilder`) .
 
 ```
-docker build -t rpi-torrent-box .
+make all
 ```
 
 ## Run it
@@ -28,7 +30,7 @@ The environment `NEW_USER` and `NEW_PASS` are used for the web access login. If 
 ```
 docker run -dt --name rpi-torrent_01 \
   -p 8080:80 -p 8443:443 -p 49160:49160/udp -p 49161:49161 
-  -v ~/data:/rtorrent 
+  -v ~/data:/rtorrent
   -e NEW_USER=myuser
   -e NEW_PASS=mypass
   sdelrio/rpi-torrent-box
@@ -42,8 +44,8 @@ The environment `RTORRENT_DHT` and `RTORRENT_PORT` changes the rtorrent configur
 
 ```
 docker run -dt --name rpi-torrent_01 \
-  -p 8080:80 -p 8443:443 -p 50000:50000/udp -p 50001:50001 
-  -v ~/data:/rtorrent 
+  -p 8080:80 -p 8443:443 -p 50000:50000/udp -p 50001:50001
+  -v ~/data:/rtorrent
   -e RTORRENT_DHT=50000
   -e RTORRENT_PORT=50001
   sdelrio/rpi-torrent-box
@@ -69,11 +71,37 @@ $ docker exec -t my-rpi-torrent bash
 
 After changing `.htpasswd` file you must stop/start container. The initial script will look for this file and copy where nginx load it.
 
+## Workarounds migrating to torrent 0.9.7 from older versions
+
+Revise `.rtorrent.rc`, many values are deprecated and can’t be used, like:
+- `load_start` -> `load.start`
+- `use_udp_trackers` -> `trackers.use_udp.set`
+- `peer_exchange` -> `protocol.pex.set`
+
+Full list of parameters: <https://github.com/rakshasa/rtorrent/wiki/rTorrent-0.9-Comprehensive-Command-list-(WIP)>
+
 ## ToDo:
 
-For now is just a release version to see how Docker Hub works with a buil image.
+For now is just a release version to see how Docker Hub works with a build image.
 
-- Clean up
 - Disable logs or redirect to stdout
-- Reduce final image size
-- Make changes on ports at rtorrent config using environment variables. 
+- Make changes on ports at rtorrent config using environment variables.
+
+## Changelog
+
+- Changed `x86_64` base image from `debian:jessie` to `debian:jessie-slim`.
+- Refactored all compiled codes starting on v1.80,
+  - Added different steps to generate files that will be included into the final image (`Dockerfile.pack`).
+  - Separating in different steps could make in the future be executed in parallel in different nodes.
+  - When changing some part not always needed to compile and make all.
+  - Using this method reduced uncompressed image space for more than **150MB**.
+```
+sdelrio/rtorrent-box       v1.81               a739f1b2d297        23 hours ago        382MB
+sdelrio/rtorrent-box       v1.20               290a9ff775b8        3 days ago          647MB
+```
+- Removed `Dockerfile` to differenciate and not make mistake wiht versions older than v1.80
+- ruTorrent version update to master branch (>=3.8).
+- rTorrent/rtorrentlib update to 0.9.7/0.13.7
+- Updated variable names on `.rtorrent.rc`.
+- Set fixed version to xmlrpc lib, since using `stable` and `super_stable` branches generated build problems.
+

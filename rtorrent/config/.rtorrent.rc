@@ -1,19 +1,21 @@
 # This is an example resource file for rTorrent. Copy to
 # ~/.rtorrent.rc and enable/modify the options as needed. Remember to
 # uncomment the options you wish to enable.
+# References:
+# https://github.com/rakshasa/rtorrent/wiki/rTorrent-0.9-Comprehensive-Command-list-(WIP)
+# https://github.com/rakshasa/rtorrent/blob/master/doc/rtorrent.rc
 
 scgi_port=127.0.0.1:5000
 encoding_list = UTF-8
 
-# Maximum and minimum number of peers to connect to per torrent.
-#min_peers = 40
-#max_peers = 100
-min_peers=40
-max_peers=50
+# Maximum and minimum number of peers to connect to per torrent while downloading (`min_peers`, `max_peers`) Default: `100` and `200` respectively
+throttle.min_peers.normal.set = 40
+throttle.max_peers.normal.set = 50
 
-# Same as above but for seeding completed torrents (-1 = same as downloading)
-min_peers_seed = 10
-max_peers_seed = 50
+# Same as above but for seeding completed torrents (seeds per torrent), `-1` for same as downloading (`min_peers_seed`, `max_peers_seed`) Default: `-1` for both
+throttle.min_peers.seed.set = 10
+throttle.max_peers.seed.set = 50
+
 
 # Maximum number of simultanious uploads per torrent.
 max_uploads = 8
@@ -41,7 +43,7 @@ session = /rtorrent/.session
 
 # Watch a directory for new torrents, and stop those that have been
 # deleted.
-schedule = watch_directory,5,5,load_start=/rtorrent/watch/*.torrent
+schedule = watch_directory,5,5,load.start=/rtorrent/watch/*.torrent
 #schedule = untied_directory,5,5,stop_untied=
 
 # Close torrents when diskspace is low.
@@ -73,7 +75,8 @@ port_random = yes
 #check_hash = no
 
 # Set whetever the client should try to connect to UDP trackers.
-use_udp_trackers = yes
+# rtorrent >=0.9.7
+trackers.use_udp.set = yes
 
 # Alternative calls to bind and ip that should handle dynamic ip's.
 #schedule = ip_tick,0,1800,ip=rakshasa
@@ -103,7 +106,7 @@ dht_port=49160
 
 # Enable peer exchange (for torrents not marked private)
 #
-peer_exchange = yes
+protocol.pex.set = yes
 
 #
 # Do not modify the following parameters unless you know what you're doing.
@@ -128,5 +131,5 @@ peer_exchange = yes
 #log.add_output = "debug", "rtorrent"
 log.open_file = "rtorrent.log", /dev/stdout
 log.add_output = "error", "rtorrent.log"
-http_capath= /rtorrent/ssl
-http_cacert= /rtorrent/ssl/certificates.pem
+network.http.capath= /rtorrent/ssl
+network.http.cacert= /rtorrent/ssl/certificates.pem
