@@ -37,13 +37,21 @@ jobs:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
-    - docker pull sdelrio/arm-curl-copy || mkdir build/curl-7.39.0 && make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder && docker build -t sdelrio/arm-curl-copy . -f -<<EOF
-FROM busybox
-COPY ./build/curl-7.39.0 /copy
-EOF
+    - ./arm_curl.sh
     - docker run --rm sdelrio/arm-curl-copy -v build/curl-7.39.0:/dest cp -a /copy /dest
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         echo docker push $PACK_IMAGENAME:v$TAG
         echo docker push $PACK_IMAGENAME:latest
       fi
+  - stage: arm test compiled code pull
+    env:
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rpi-torrent-box
+    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    script:
+    - echo VERSION TAG $TAG
+    - docker pull sdelrio/arm-curl-copy | cat
+    - docker pull sdelrio/arm-xmlrpc-copy | cat
+
