@@ -16,7 +16,7 @@ jobs:
   include:
   - stage: build docker images
     env:
-    - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rtorrent-box
     script:
     - echo VERSION TAG $TAG
@@ -28,18 +28,22 @@ jobs:
         docker push $PACK_IMAGENAME:latest
       fi
   - env:
-    - TAG=$(grep "ENV VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-#    - make all
-    - ./make_pack_arm.sh
+    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    - make init
+    - docker pull sdelrio/arm-curl-copy || mkdir build/curl-7.39.0 && make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder && docker build -t sdelrio/arm-curl-copy . -f -<<EOF
+FROM busybox
+COPY ./build/curl-7.39.0 /copy
+EOF
+    - docker run --rm sdelrio/arm-curl-copy -v build/curl-7.39.0:/dest cp -a /copy /dest
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker push $PACK_IMAGENAME:v$TAG
-        docker push $PACK_IMAGENAME:latest
+        echo docker push $PACK_IMAGENAME:v$TAG
+        echo docker push $PACK_IMAGENAME:latest
       fi
