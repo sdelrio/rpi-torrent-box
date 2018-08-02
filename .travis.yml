@@ -76,7 +76,7 @@ jobs:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
-    - make init
+    - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c
     - docker run --rm sdelrio/arm-curl-copy -v $(pwd)/build/curl-7.39.0:/dest cp -a /copy /dest
     - docker run --rm sdelrio/arm-xmlrpc-copy  -v $(pwd)/build/xmlrpc-c:/dest cp -a /copy /dest
     - |
