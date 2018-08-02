@@ -54,6 +54,7 @@ jobs:
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    - make init
     - ./arm_xmlrpc.sh
   - stage: build arm docker image
     env:
@@ -67,6 +68,7 @@ jobs:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
+    - make init
     - docker run --rm sdelrio/arm-curl-copy -v $(PWD)/build/curl-7.39.0:/dest cp -a /copy /dest
     - docker run --rm sdelrio/arm-xmlrpc-copy  -v $(PWD)/build/xmlrpc-c:/dest cp -a /copy /dest
     - |
