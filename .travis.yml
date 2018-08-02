@@ -24,8 +24,12 @@ jobs:
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        docker push $PACK_IMAGENAME:v$TAG
-        docker push $PACK_IMAGENAME:latest
+        if [ "$TAG" == "master" ]; then
+          docker push $PACK_IMAGENAME:$TAG
+        else
+          docker push $PACK_IMAGENAME:v$TAG
+          docker push $PACK_IMAGENAME:latest
+        fi
       fi
   - stage: compile arm parts
     env:
@@ -67,7 +71,11 @@ jobs:
     - docker run --rm sdelrio/arm-xmlrpc-copy  -v $(PWD)/build/xmlrpc-c:/dest cp -a /copy /dest
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-        echo docker push $PACK_IMAGENAME:v$TAG
-        echo docker push $PACK_IMAGENAME:latest
+        if [ "$TAG" == "master" ]; then
+          docker push $PACK_IMAGENAME:$TAG
+        else
+          docker push $PACK_IMAGENAME:v$TAG
+          docker push $PACK_IMAGENAME:latest
+        fi
       fi
 

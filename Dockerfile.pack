@@ -174,7 +174,7 @@ COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 
 ADD supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 
-ENV VER_BOX 1.81
+ENV VER_BOX master
 
 # Ports
 
