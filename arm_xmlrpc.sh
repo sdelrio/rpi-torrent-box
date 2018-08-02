@@ -10,7 +10,7 @@ else
     make xmlrpc PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
-COPY ./build/xmlrpc /copy
+COPY ./build/xmlrpc-c /copy
 EOF
 
     echo - Pushing arm xmlrpc from next builds
