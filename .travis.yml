@@ -25,6 +25,7 @@ jobs:
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         if [ "$TAG" == "master" ]; then
+          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
           docker push $PACK_IMAGENAME:$TAG
         else
           docker push $PACK_IMAGENAME:v$TAG
@@ -74,6 +75,7 @@ jobs:
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         if [ "$TAG" == "master" ]; then
+          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
           docker push $PACK_IMAGENAME:$TAG
         else
           docker push $PACK_IMAGENAME:v$TAG
