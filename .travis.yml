@@ -14,7 +14,7 @@ notifications:
     on_failure: always
 jobs:
   include:
-  - stage: build docker images
+  - stage: build x86_64 docker image
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rtorrent-box
@@ -27,7 +27,8 @@ jobs:
         docker push $PACK_IMAGENAME:v$TAG
         docker push $PACK_IMAGENAME:latest
       fi
-  - env:
+  - stage: build arm docker image
+    env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
@@ -38,20 +39,31 @@ jobs:
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
     - ./arm_curl.sh
-    - docker run --rm sdelrio/arm-curl-copy -v build/curl-7.39.0:/dest cp -a /copy /dest
-    - |
-      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-        echo docker push $PACK_IMAGENAME:v$TAG
-        echo docker push $PACK_IMAGENAME:latest
-      fi
-  - stage: arm test compiled code pull
-    env:
+  - env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    - ./arm_xmlrpc.sh
+  - env:
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rpi-torrent-box
+    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    script:
+    - echo VERSION TAG $TAG
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
+    - docker run --rm sdelrio/arm-curl-copy -v $(PWD)/build/curl-7.39.0:/dest cp -a /copy /dest
+    - docker run --rm sdelrio/arm-xmlrpc-copy  -v $(PWD)/build/xmlrpc-c:/dest cp -a /copy /dest
+    - |
+      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        echo docker push $PACK_IMAGENAME:v$TAG
+        echo docker push $PACK_IMAGENAME:latest
+      fi
 
