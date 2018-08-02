@@ -35,15 +35,15 @@ curl:
 	echo CURL_VERSION=$(CURL_VERSION)
 	test ! -s $(TMP_CURLFILE) && curl -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz && \
 	tar xzf $(TMP_CURLFILE) -C ./build/ || echo $(TMP_CURLFILE) already exists
-	docker run -e CURL_VERSION=$(CURL_VERSION) -ti -v $(pwd)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_curl.sh
-	ls -l $(pwd)/build/curl-7.39.0/src/curl
+	docker run -e CURL_VERSION=$(CURL_VERSION) -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_curl.sh
+	ls -l $(PWD)/build/curl-7.39.0/src/curl
 
 .PHONY: xmlrpc
 xmlrpc:
 	@set -e;
 	@echo Begin compiling xmlrpc
 	svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ ./build/xmlrpc-c
-	docker run -ti -v $(pwd)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_xmlrpc.sh
+	docker run -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_xmlrpc.sh
 
 .PHONY: libtorrent
 libtorrent:
@@ -51,7 +51,7 @@ libtorrent:
 	echo VER_LIBTORRENT=$(VER_LIBTORRENT)
 	test ! -s ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" && curl -s -q -L -o .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz https://github.com/rakshasa/libtorrent/archive/v$(VER_LIBTORRENT).tar.gz && \
 	tar xzf .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz -C ./build/ || echo .tmp/libtorrent-$(VER_LIBTORRENT).tar.gz alredy exists
-	docker run -ti -e VER_LIBTORRENT=$(VER_LIBTORRENT) -v $(pwd)/build/:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_libtorrent.sh
+	docker run -ti -e VER_LIBTORRENT=$(VER_LIBTORRENT) -v $(PWD)/build/:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_libtorrent.sh
 
 .PHONY: rtorrent
 rtorrent:
@@ -64,7 +64,7 @@ rtorrent:
 -e VER_LIBTORRENT=$(VER_LIBTORRENT) \
 -e VER_RTORRENT=$(VER_RTORRENT) \
 -e CURL_VERSION=$(CURL_VERSION) \
--ti -v $(pwd)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_rtorrent.sh
+-ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_rtorrent.sh
 
 .PHONY: pack
 pack:
