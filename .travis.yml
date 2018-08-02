@@ -39,24 +39,22 @@ jobs:
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
-    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
-    - ./arm_curl.sh
+    - 'if [ "$TRAVIS_PULL_REQUEST" != "true" ]; then ./arm_curl.sh fi'
   - env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
-    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
-    - ./arm_xmlrpc.sh
+    - 'if [ "$TRAVIS_PULL_REQUEST" != "true" ]; then ./arm_xmlrpc.sh fi'
   - stage: build arm docker image
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -64,7 +62,6 @@ jobs:
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
-    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
