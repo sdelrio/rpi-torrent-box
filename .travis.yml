@@ -27,13 +27,14 @@ jobs:
         docker push $PACK_IMAGENAME:v$TAG
         docker push $PACK_IMAGENAME:latest
       fi
-  - stage: build arm docker image
+  - stage: compile arm parts
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
+    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
@@ -45,16 +46,19 @@ jobs:
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
+    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - ./arm_xmlrpc.sh
-  - env:
+  - stage: build arm docker image
+    env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
+    - '[ "${TRAVIS_PULL_REQUEST}" = "true" ] exit 0'
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
