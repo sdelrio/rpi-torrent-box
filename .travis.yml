@@ -77,16 +77,16 @@ jobs:
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
     - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c
-    - docker run --rm sdelrio/arm-curl-copy -v $(pwd)/build/curl-7.39.0:/dest cp -a /copy /dest
-    - docker run --rm sdelrio/arm-xmlrpc-copy  -v $(pwd)/build/xmlrpc-c:/dest cp -a /copy /dest
+    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy /dest
+    - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest  sdelrio/arm-xmlrpc-copy cp -a /copy /dest
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         if [ "$TAG" == "master" ]; then
-          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
-          docker push $PACK_IMAGENAME:$TAG
+          echo docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
+          echo docker push $PACK_IMAGENAME:$TAG
         else
-          docker push $PACK_IMAGENAME:v$TAG
-          docker push $PACK_IMAGENAME:latest
+          echo docker push $PACK_IMAGENAME:v$TAG
+          echo docker push $PACK_IMAGENAME:latest
         fi
       fi
 
