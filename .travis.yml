@@ -14,24 +14,6 @@ notifications:
     on_failure: always
 jobs:
   include:
-  - stage: build x86_64 docker image
-    env:
-    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
-    - PACK_IMAGENAME=sdelrio/rtorrent-box
-    script:
-    - echo VERSION TAG $TAG
-    - make init curl xmlrpc libtorrent rtorrent pack
-    - |
-      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-        if [ "$TAG" == "master" ]; then
-          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
-          docker push $PACK_IMAGENAME:$TAG
-        else
-          docker push $PACK_IMAGENAME:v$TAG
-          docker push $PACK_IMAGENAME:latest
-        fi
-      fi
   - stage: compile arm parts
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -65,6 +47,24 @@ jobs:
       else
         ./arm_xmlrpc.sh
       fi
+  - env:
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rpi-torrent-box
+    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    script:
+    - echo VERSION TAG $TAG
+    - echo VER_LIBTORRENT $VER_LIBTORRENT
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    - make init
+    - |
+      if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+        echo "ARM build disabled on pull request"
+      else
+        ./arm_libtorrent.sh
+      fi
   - stage: build arm docker image
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -87,6 +87,24 @@ jobs:
         else
           echo docker push $PACK_IMAGENAME:v$TAG
           echo docker push $PACK_IMAGENAME:latest
+        fi
+      fi
+  - stage: build x86_64 docker image
+    env:
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rtorrent-box
+    script:
+    - echo VERSION TAG $TAG
+    - make init curl xmlrpc libtorrent rtorrent pack
+    - |
+      if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+        if [ "$TAG" == "master" ]; then
+          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
+          docker push $PACK_IMAGENAME:$TAG
+        else
+          docker push $PACK_IMAGENAME:v$TAG
+          docker push $PACK_IMAGENAME:latest
         fi
       fi
 
