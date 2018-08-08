@@ -55,6 +55,8 @@ docker run -dt --name rpi-torrent_01 \
 
 ## Modify manually login/password on .htpassword to access ruTorrent interface
 
+You can use environment vars `NEW_USER` and `NEW_PASS` to change password on container start. But if you want to manually edit the password file here is the instructions:
+
 When runing image you use the volume `/rtorrent`. Here you can set up or modify `.htpasswd` file.
 You can add more users or just change using `>` instead `>>` in the redirection:
 
@@ -106,4 +108,5 @@ sdelrio/rtorrent-box       v1.20               290a9ff775b8        3 days ago   
 - rTorrent/rtorrentlib update to 0.9.7/0.13.7
 - Updated variable names on `.rtorrent.rc`.
 - Set fixed version to xmlrpc lib, since using `stable` and `super_stable` branches generated build problems.
+- Removed apache2-tools to reduce image a little more.
 

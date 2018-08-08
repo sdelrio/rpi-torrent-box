@@ -8,7 +8,7 @@ USER root
 RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y libc-ares2 libssl1.0.0 libxml2 libcppunit-1.13-0 && \
-    apt-get install -y --no-install-recommends openssl apache2-utils nginx php5-cli php5-fpm geoip-database php5-geoip && \
+    apt-get install -y --no-install-recommends openssl nginx php5-cli php5-fpm geoip-database php5-geoip && \
     apt-get install -y --force-yes unzip unrar-free mediainfo python-setuptools sox && \
     apt-get install -q -y --force-yes --no-install-recommends deb-multimedia-keyring ffmpeg && \
     openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout /etc/ssl/private/rutorrent.key -out /etc/ssl/private/rutorrent.crt -subj /CN=rutorrent && \
