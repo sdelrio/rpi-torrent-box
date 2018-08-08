@@ -2,6 +2,8 @@
 
 [![](https://img.shields.io/docker/pulls/sdelrio/rpi-torrent-box.svg)](https://hub.docker.com/r/sdelrio/rpi-torrent-box 'DockerHub')
 
+[![Build Status](https://travis-ci.org/sdelrio/rpi-torrent-box.svg?branch=master)](https://travis-ci.org/sdelrio/rpi-torrent-box)
+
 # Docker container stack: rtorrent (from sources), uTorrent + nginx + php-fpm 
 
 Designed to work on **Raspbery Pi** and `x86_64`.
