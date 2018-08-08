@@ -22,5 +22,10 @@ if [ "$RTORRENT_DHT" ]; then
     sed -i "s/^dht_port.*$/dht_port=${RTORRENT_DHT}/" /rtorrent/.rtorrent.rc
 fi
 
+# clean lock file
+if [ -f /session/rtorrent.lock ]; then
+    rm -f /session/rtorrent.lock
+fi
+
 # Run rTorrent 
 exec /usr/local/bin/rtorrent
