@@ -68,6 +68,8 @@ rtorrent:
 
 .PHONY: pack
 pack:
+	ls -la build/curl-${CURL_VERSION}/src/.libs/curl
+	ls -la build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0
 	docker build --build-arg BASE_IMAGE=$(BUILDER_BASE) -t $(PACK_IMAGENAME) -f Dockerfile.pack .
 	docker tag $(PACK_IMAGENAME) $(PACK_IMAGENAME):v$(VER_BOX)
 
