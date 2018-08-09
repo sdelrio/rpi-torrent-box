@@ -22,13 +22,11 @@ ENV CURL_VERSION 7.39.0
 
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config  /usr/local/bin/
 COPY build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0 /usr/local/lib/libcur.so.4.3.0
-RUN ls -la /usr/local/bin && ls -la /usr/local/lib
 RUN ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so && \
     ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so.4 && \
     ldconfig
-RUN echo path=$PATH
-RUN curl --version && \
-    curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
+RUN /usr/local/bin/curl --version && \
+    /usr/local/bin/curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
     gunzip GeoLiteCity.dat.gz && \
     mkdir -p /usr/share/GeoIP && \
     mv GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
