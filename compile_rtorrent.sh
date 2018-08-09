@@ -9,7 +9,7 @@ ls
 
 echo - Installing curl-$CURL_VERSION
 ls curl-$CURL_VERSION
-cd curl-$CURL_VERSION && make install V=0
+cd curl-$CURL_VERSION && make install V=0 > /dev/null
 cd ..
 pwd
 
@@ -21,7 +21,7 @@ pwd
 
 echo - Installing libtorrent-$VER_LIBTORRENT
 ls libtorrent-$VER_LIBTORRENT
-cd libtorrent-$VER_LIBTORRENT && make install V=0
+cd libtorrent-$VER_LIBTORRENT && make install V=0 > /dev/null
 cd ..
 pwd
 
