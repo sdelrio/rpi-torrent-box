@@ -68,6 +68,7 @@ jobs:
   - env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
@@ -93,6 +94,8 @@ jobs:
   - stage: build arm docker image
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
