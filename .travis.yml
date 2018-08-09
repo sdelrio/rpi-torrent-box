@@ -79,9 +79,9 @@ jobs:
     - docker pull sdelrio/arm-xmlrpc-copy | cat
     - docker pull sdelrio/arm-libtorrent-copy | cat
     - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7
-    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy /dest
-    - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy /dest
-    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy /dest
+    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy/ /dest
+    - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/ /dest
+    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy/  cp -a /copy /dest
     - ls $(pwd)/build
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - |
@@ -104,10 +104,10 @@ jobs:
     - docker pull sdelrio/arm-libtorrent-copy | cat
     - docker pull sdelrio/arm-rtorrent-copy | cat
     - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7 && mkdir build/rtorrent-0.9.7
-    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy /dest
-    - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy /dest
-    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy /dest
-    - docker run --rm -v $(pwd)/build/rtorrent-0.9.:/dest sdelrio/arm-rtorrent-copy  cp -a /copy /dest
+    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy/ /dest
+    - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/ /dest
+    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/ /dest
+    - docker run --rm -v $(pwd)/build/rtorrent-0.9.:/dest sdelrio/arm-rtorrent-copy  cp -a /copy/ /dest
     - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
