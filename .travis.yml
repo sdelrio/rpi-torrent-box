@@ -65,6 +65,24 @@ jobs:
       else
         ./arm_libtorrent.sh
       fi
+  - env:
+    - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - PACK_IMAGENAME=sdelrio/rpi-torrent-box
+    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    script:
+    - echo VERSION TAG $TAG
+    - echo VER_RTORRENT $VER_RTORRENT
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    - make init
+    - |
+      if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+        echo "ARM build disabled on pull request"
+      else
+        ./arm_rtorrent.sh
+      fi
   - stage: build arm docker image
     env:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -76,10 +94,11 @@ jobs:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
-    - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7
+    - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7 && mkdir build/rtorrent-0.9.7
     - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy /dest
     - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy /dest
     - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy /dest
+    - docker run --rm -v $(pwd)/build/rtorrent-0.9.:/dest sdelrio/arm-rtorrent-copy  cp -a /copy /dest
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         if [ "$TAG" == "master" ]; then
