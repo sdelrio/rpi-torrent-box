@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 IMAGE=sdelrio/arm-rtorrent-copy
 
@@ -8,7 +9,7 @@ if docker pull $IMAGE ; then
 else
 
     mkdir rtorrent-$VER_RTORRENT
-    make rtorrent PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    make rtorrent VER_RTORRENT=$VER_RTORRENT VER_LIBTORRENT=$VER_RTORRENT VER_CURL=$VER_CURL PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/rtorrent-$VER_RTORRENT /copy
