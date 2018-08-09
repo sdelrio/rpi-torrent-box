@@ -25,6 +25,7 @@ COPY build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0 /usr/local/lib/libcur
 RUN ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so && \
     ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so.4 && \
     ldconfig
+RUN ls -l /usr/local/bin/curl
 RUN /usr/local/bin/curl --version && \
     /usr/local/bin/curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
     gunzip GeoLiteCity.dat.gz && \
