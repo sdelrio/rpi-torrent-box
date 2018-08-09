@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 IMAGE=sdelrio/arm-rtorrent-copy
 
@@ -10,7 +11,7 @@ else
     make rtorrent PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
-COPY ./build/rtorrent-$VER_LIBTORRENT /copy
+COPY ./build/rtorrent-$VER_RTORRENT /copy
 EOF
 
     echo - Pushing arm libtorrent from next builds
