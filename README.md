@@ -40,7 +40,7 @@ docker run -dt --name rpi-torrent_01 \
 
 The URL to access interfaces is `http://<IP>:<PORT>`. No need to append `/rutorrent` on URL on this version.
 
-![](rutorrent-screenshot.png?raw=true "ruTorrent screenshot")
+![](img/rutorrent-screenshot.png?raw=true "ruTorrent screenshot")
 
 ### Environment vars to change rtorrent listening ports
 
