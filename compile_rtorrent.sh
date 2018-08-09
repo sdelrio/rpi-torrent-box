@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 pwd
 ls
@@ -7,16 +8,19 @@ ls
 # PREPARE NEEDED LIBS
 
 echo - Installing curl-$CURL_VERSION
+ls curl-$CURL_VERSION
 cd curl-$CURL_VERSION && make install V=0
 cd ..
 pwd
 
 echo - Installing xmlrpc-c
+ls xmlrpc-c
 cd xmlrpc-c && make install V=0
 cd ..
 pwd
 
 echo - Installing libtorrent-$VER_LIBTORRENT
+ls libtorrent-$VER_LIBTORRENT
 cd libtorrent-$VER_LIBTORRENT && make install V=0
 cd ..
 pwd
