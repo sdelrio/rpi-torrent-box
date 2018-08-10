@@ -133,6 +133,7 @@ jobs:
     - DESC=x86_64_PACK_ALL
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rtorrent-box
+    - BUILDER_BASE=debian:jessie-slim
     script:
     - echo VERSION TAG $TAG
     - make BUILDER_BASE=$BUILDER_BASE init curl xmlrpc libtorrent rtorrent pack
