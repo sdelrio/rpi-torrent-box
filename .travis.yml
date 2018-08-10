@@ -112,7 +112,7 @@ jobs:
     - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/rtorrent-0.9.7:/dest sdelrio/arm-rtorrent-copy  cp -a /copy/. /dest
     - ls build
-    - make pack
+    - make BUILDER_BASE=$BUILDER_BASE PACK_IMAGENAME=$PACK_IMAGENAME pack
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
