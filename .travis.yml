@@ -54,7 +54,7 @@ jobs:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
-    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - BUILDER_BASE=debian:jessie-slim
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
@@ -135,7 +135,7 @@ jobs:
     - PACK_IMAGENAME=sdelrio/rtorrent-box
     script:
     - echo VERSION TAG $TAG
-    - make init curl xmlrpc libtorrent rtorrent pack
+    - make BUILDER_BASE=$BUILDER_BASE init curl xmlrpc libtorrent rtorrent pack
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"

@@ -1,5 +1,5 @@
 BUILDER_BASE ?= "debian:jessie-slim"
-GCCBUILDER_IMAGENAME == "sdelrio/gccbuilder"
+GCCBUILDER_IMAGENAME ?= "sdelrio/gccbuilder"
 PACK_IMAGENAME ?= "sdelrio/rtorrent-box"
 ARM_PACK_IMAGE := "resin/rpi-raspbian:wheezy"
 CURL_VERSION = $(shell grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $$NF}')
