@@ -23,12 +23,12 @@ jobs:
     script:
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
     - |
       if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
         echo "ARM build disabled on pull request"
       else
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_curl.sh fi
       fi
   - env:
@@ -39,12 +39,12 @@ jobs:
     script:
     - echo VERSION TAG $TAG
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
     - |
       if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
         echo "ARM build disabled on pull request"
       else
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_xmlrpc.sh
       fi
   - env:
@@ -57,12 +57,12 @@ jobs:
     - echo VERSION TAG $TAG
     - echo VER_LIBTORRENT $VER_LIBTORRENT
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - make init
     - |
       if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
         echo "ARM build disabled on pull request"
       else
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_libtorrent.sh
       fi
   - env:
@@ -84,11 +84,11 @@ jobs:
     - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
     - ls $(pwd)/build
-    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - |
       if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
         echo "ARM build disabled on pull request"
       else
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_rtorrent.sh
       fi
   - stage: build arm docker image
@@ -113,9 +113,9 @@ jobs:
     - docker run --rm -v $(pwd)/build/rtorrent-0.9.7:/dest sdelrio/arm-rtorrent-copy  cp -a /copy/. /dest
     - ls build
     - make pack
-    - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         if [ "$TAG" == "master" ]; then
           echo docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
           echo docker push $PACK_IMAGENAME:$TAG
