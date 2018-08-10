@@ -16,6 +16,7 @@ jobs:
   include:
   - stage: compile arm parts
     env:
+    - DESC=ARM_CURL
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
@@ -32,6 +33,7 @@ jobs:
         ./arm_curl.sh fi
       fi
   - env:
+    - DESC=ARM_XMLRPC
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
@@ -48,6 +50,7 @@ jobs:
         ./arm_xmlrpc.sh
       fi
   - env:
+    - DESC=ARM_LIBTORRENT
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
@@ -66,6 +69,7 @@ jobs:
         ./arm_libtorrent.sh
       fi
   - env:
+    - DESC=ARM_RTORRENT
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -91,8 +95,9 @@ jobs:
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_rtorrent.sh
       fi
-  - stage: build arm docker image
+  - stage: build pack all docker image
     env:
+    - DESC=ARM_PACK_ALL
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
@@ -124,8 +129,8 @@ jobs:
           echo docker push $PACK_IMAGENAME:latest
         fi
       fi
-  - stage: build x86_64 docker image
-    env:
+  - env:
+    - DESC=x86_64_PACK_ALL
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rtorrent-box
     script:
