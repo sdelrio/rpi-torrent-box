@@ -74,6 +74,7 @@ jobs:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
@@ -84,10 +85,10 @@ jobs:
     - docker pull sdelrio/arm-curl-copy | cat
     - docker pull sdelrio/arm-xmlrpc-copy | cat
     - docker pull sdelrio/arm-libtorrent-copy | cat
-    - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7
-    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy/. /dest
+    - make init && mkdir build/curl-$CURL_VERSION && mkdir build/xmlrpc-c && mkdir build/libtorrent-$VER_LIBTORRENT
+    - docker run --rm -v $(pwd)/build/curl-$CURL_VERSION:/dest sdelrio/arm-curl-copy cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/. /dest
-    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
+    - docker run --rm -v $(pwd)/build/libtorrent-$VER_LIBTORRENT:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
     - ls $(pwd)/build
     - |
       if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
@@ -102,6 +103,7 @@ jobs:
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
+    - CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
     - BUILDER_BASE=resin/rpi-raspbian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
@@ -112,19 +114,19 @@ jobs:
     - docker pull sdelrio/arm-xmlrpc-copy | cat
     - docker pull sdelrio/arm-libtorrent-copy | cat
     - docker pull sdelrio/arm-rtorrent-copy | cat
-    - make init && mkdir build/curl-7.39.0 && mkdir build/xmlrpc-c && mkdir build/libtorrent-0.13.7 && mkdir build/rtorrent-0.9.7
-    - docker run --rm -v $(pwd)/build/curl-7.39.0:/dest sdelrio/arm-curl-copy cp -a /copy/. /dest
+    - make init && mkdir build/curl-$CURL_VERSION && mkdir build/xmlrpc-c && mkdir build/libtorrent-$VER_LIBTORREN && mkdir build/rtorrent-$VER_RTORRENT
+    - docker run --rm -v $(pwd)/build/curl-$CURL_VERSION:/dest sdelrio/arm-curl-copy cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/. /dest
-    - docker run --rm -v $(pwd)/build/libtorrent-0.13.7:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
-    - docker run --rm -v $(pwd)/build/rtorrent-0.9.7:/dest sdelrio/arm-rtorrent-copy  cp -a /copy/. /dest
+    - docker run --rm -v $(pwd)/build/libtorrent-$VER_LIBTORRENT:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest
+    - docker run --rm -v $(pwd)/build/rtorrent-$VER_RTORRENT:/dest sdelrio/arm-rtorrent-copy  cp -a /copy/. /dest
     - ls build
     - make BUILDER_BASE=$BUILDER_BASE PACK_IMAGENAME=$PACK_IMAGENAME pack
     - |
       if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         if [ "$TAG" == "master" ]; then
-          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:v$TAG
-          docker push $PACK_IMAGENAME:v$TAG
+          docker tag $PACK_IMAGENAME:latest $PACK_IMAGENAME:$TAG
+          docker push $PACK_IMAGENAME:$TAG
         else
           docker push $PACK_IMAGENAME:v$TAG
           docker push $PACK_IMAGENAME:latest

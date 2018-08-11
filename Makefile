@@ -57,6 +57,7 @@ libtorrent:
 rtorrent:
 	@set -e;
 	echo VER_RTORRENT=$(VER_RTORRENT)
+	ls -l ".tmp"
 	test ! -s ".tmp/rtorrent-$(VER_RTORRENT).tar.gz" && curl -s -q -L -o .tmp/rtorrent-$(VER_RTORRENT).tar.gz https://github.com/rakshasa/rtorrent/releases/download/v$(VER_RTORRENT)/rtorrent-$(VER_RTORRENT).tar.gz || echo ".tmp/libtorrent-$(VER_LIBTORRENT).tar.gz" already exists
 	tar xzf .tmp/rtorrent-$(VER_RTORRENT).tar.gz -C ./build/
 
