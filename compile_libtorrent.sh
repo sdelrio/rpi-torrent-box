@@ -6,7 +6,7 @@ cd libtorrent-$VER_LIBTORRENT
 echo - Autogent compile libtorrent-$VER_LIBTORRENT
 ./autogen.sh
 echo - Configure compile libtorrent-$VER_LIBTORRENT
-./configure --help
+
 ./configure --quiet --with-posix-fallocate
 
 export CFLAGS="-O2 ${CFLAGS}"
