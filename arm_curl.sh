@@ -8,7 +8,7 @@ else
 
     mkdir build/curl-$CURL_VERSION
     make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:wheezy GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
-    docker build -t $IMAGE . -f -<<EOF
+    docker build --build-arg CURL_VERSION=$CURL_VERSION -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/curl-$CURL_VERSION /copy
 EOF
