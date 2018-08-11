@@ -1,7 +1,9 @@
 #!/bin/bash
+set -e
 
 IMAGE=sdelrio/arm-curl-copy
-CURL_VERSION = $(shell grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $$NF}')
+CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+
 if docker pull $IMAGE ; then
     echo - Getting arm curl from previous build
 else
