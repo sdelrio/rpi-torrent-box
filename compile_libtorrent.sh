@@ -8,6 +8,10 @@ echo - Autogent compile libtorrent-$VER_LIBTORRENT
 echo - Configure compile libtorrent-$VER_LIBTORRENT
 ./configure --help
 ./configure --quiet --with-posix-fallocate
+
+export CFLAGS="-O2 ${CFLAGS}"
+export CXXFLAGS="${CFLAGS}"
 make V=0
+
 echo - Finish compile libtorrent-$VER_LIBTORRENT
 
