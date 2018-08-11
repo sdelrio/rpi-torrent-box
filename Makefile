@@ -1,7 +1,7 @@
-BUILDER_BASE ?= "debian:wheezy-slim"
+BUILDER_BASE ?= "debian:stretch-slim"
 GCCBUILDER_IMAGENAME ?= "sdelrio/gccbuilder"
 PACK_IMAGENAME ?= "sdelrio/rtorrent-box"
-ARM_PACK_IMAGE := "resin/rpi-raspbian:wheezy"
+ARM_PACK_IMAGE := "resin/rpi-raspbian:stretch"
 CURL_VERSION = $(shell grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $$NF}')
 VER_LIBTORRENT = $(shell grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $$NF}')
 VER_RTORRENT = $(shell grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $$NF}')

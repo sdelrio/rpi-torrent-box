@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=resin/rpi-raspbian:wheezy
+ARG BASE_IMAGE=resin/rpi-raspbian:stretch
 
 FROM $BASE_IMAGE
 

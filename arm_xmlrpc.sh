@@ -7,7 +7,7 @@ if docker pull $IMAGE ; then
 else
 
     mkdir build/xmlrpc-c
-    make xmlrpc PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:wheezy GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    make xmlrpc PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:stretch GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/xmlrpc-c /copy
