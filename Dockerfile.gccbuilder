@@ -8,7 +8,7 @@ USER root
 #    apt-get install -y --force-yes unzip unrar-free mediainfo curl wget
 
 
-ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion "
+ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion zlib1g-dev"
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends ${build_deps} \
     openssl \
