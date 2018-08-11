@@ -17,7 +17,7 @@ RUN echo "deb http://www.deb-multimedia.org wheezy main" >> /etc/apt/sources.lis
 
 # Compiled curl
 
-ENV CURL_VERSION 7.39.0
+ENV CURL_VERSION 7.61.0
 
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config  /usr/local/bin/
 COPY build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0 /usr/local/lib/libcur.so.4.3.0

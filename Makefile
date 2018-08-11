@@ -36,7 +36,7 @@ curl:
 	test ! -s $(TMP_CURLFILE) && curl -s -q -L http://curl.haxx.se/download/curl-$(CURL_VERSION).tar.gz -o .tmp/curl.tar.gz && \
 	tar xzf $(TMP_CURLFILE) -C ./build/ || echo $(TMP_CURLFILE) already exists
 	docker run -e CURL_VERSION=$(CURL_VERSION) -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_curl.sh
-	ls -l $(PWD)/build/curl-7.39.0/src/curl
+	ls -l $(PWD)/build/curl-$(CURL_VERSION)/src/curl
 
 .PHONY: xmlrpc
 xmlrpc:
