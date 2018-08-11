@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 IMAGE=sdelrio/arm-libtorrent-copy
 
