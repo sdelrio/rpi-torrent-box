@@ -1,4 +1,4 @@
-BUILDER_BASE ?= "debian:jessie-slim"
+BUILDER_BASE ?= "debian:wheezy-slim"
 GCCBUILDER_IMAGENAME ?= "sdelrio/gccbuilder"
 PACK_IMAGENAME ?= "sdelrio/rtorrent-box"
 ARM_PACK_IMAGE := "resin/rpi-raspbian:wheezy"

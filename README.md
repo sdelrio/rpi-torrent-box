@@ -95,6 +95,7 @@ For now is just a release version to see how Docker Hub works with a build image
 
 ## Changelog
 
+- Changed `x86_64` base image from `debian:wheezy` to `debian:wheezy-slim`.
 - Changed `x86_64` base image from `debian:jessie` to `debian:jessie-slim`.
 - Refactored all compiled codes starting on v1.80,
   - Added different steps to generate files that will be included into the final image (`Dockerfile.pack`).

@@ -6,7 +6,7 @@ if docker pull $IMAGE ; then
 else
 
     mkdir build/curl-7.39.0
-    make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:wheezy GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/curl-7.39.0 /copy

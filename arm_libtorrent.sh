@@ -7,7 +7,7 @@ if docker pull $IMAGE ; then
 else
 
     mkdir libtorrent-$VER_LIBTORRENT
-    make libtorrent PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    make libtorrent PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:wheezy GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/libtorrent-$VER_LIBTORRENT /copy
