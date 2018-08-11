@@ -68,7 +68,8 @@ jobs:
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
         ./arm_libtorrent.sh
       fi
-  - env:
+  - stage: compile rtorrent using previous arm parts
+    env:
     - DESC=ARM_RTORRENT
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - VER_RTORRENT=$(grep "ENV VER_RTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
