@@ -7,10 +7,10 @@ echo - Autogent compile libtorrent-$VER_LIBTORRENT
 ./autogen.sh
 echo - Configure compile libtorrent-$VER_LIBTORRENT
 
-./configure --quiet --with-posix-fallocate
+./configure --quiet --enable-silent-rules --with-posix-fallocate
 
-export CFLAGS="-O2 ${CFLAGS}"
-export CXXFLAGS="${CFLAGS}"
+#export CFLAGS="-O2 ${CFLAGS}"
+#export CXXFLAGS="${CFLAGS}"
 make V=0
 
 echo - Finish compile libtorrent-$VER_LIBTORRENT
