@@ -114,7 +114,7 @@ jobs:
     - docker pull sdelrio/arm-xmlrpc-copy | cat
     - docker pull sdelrio/arm-libtorrent-copy | cat
     - docker pull sdelrio/arm-rtorrent-copy | cat
-    - make init && mkdir build/curl-$CURL_VERSION && mkdir build/xmlrpc-c && mkdir build/libtorrent-$VER_LIBTORREN && mkdir build/rtorrent-$VER_RTORRENT
+    - make init && mkdir build/curl-$CURL_VERSION && mkdir build/xmlrpc-c && mkdir build/libtorrent-$VER_LIBTORRENT && mkdir build/rtorrent-$VER_RTORRENT
     - docker run --rm -v $(pwd)/build/curl-$CURL_VERSION:/dest sdelrio/arm-curl-copy cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/xmlrpc-c:/dest sdelrio/arm-xmlrpc-copy cp -a /copy/. /dest
     - docker run --rm -v $(pwd)/build/libtorrent-$VER_LIBTORRENT:/dest sdelrio/arm-libtorrent-copy  cp -a /copy/. /dest

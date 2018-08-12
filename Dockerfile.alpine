@@ -22,13 +22,14 @@ RUN apk add --no-cache openssl c-ares libssl1.0 libxml2 cppunit apache2-utils ng
 # Compiled curl
 
 ENV CURL_VERSION 7.39.0
+ENV CURL_LIB libcurl.so.4.5.0
 
 RUN ls -la /usr/local/bin
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config /usr/local/bin/
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config /usr/local/bin/
-COPY build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0 /usr/local/lib/libcurl.so.4.3.0
-RUN ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so
-RUN ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so.4
+COPY build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB} /usr/local/lib/${CURL_LIB}
+RUN ln -s /usr/local/lib/${CURL_LIB} /usr/local/lib/libcurl.so
+RUN ln -s /usr/local/lib/${CURL_LIB} /usr/local/lib/libcurl.so.4
 RUN ls -la /usr/local/bin
 RUN ls -la /usr/local/lib
 RUN ldd /usr/local/lib/libcurl.so.4

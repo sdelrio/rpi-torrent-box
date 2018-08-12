@@ -18,11 +18,12 @@ RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.lis
 # Compiled curl
 
 ENV CURL_VERSION 7.61.0
+ENV CURL_LIB libcurl.so.4.5.0
 
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config  /usr/local/bin/
-COPY build/curl-${CURL_VERSION}/lib/.libs/libcurl.so.4.3.0 /usr/local/lib/libcur.so.4.3.0
-RUN ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so && \
-    ln -s /usr/local/lib/libcurl.so.4.3.0 /usr/local/lib/libcurl.so.4 && \
+COPY build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB} /usr/local/lib/${CURL_LIB}
+RUN ln -s /usr/local/lib/${CURL_LIB} /usr/local/lib/libcurl.so && \
+    ln -s /usr/local/lib/${CURL_LIB} /usr/local/lib/libcurl.so.4 && \
     ldconfig
 RUN ls -l /usr/local/bin/curl
 RUN /usr/local/bin/curl --version && \
