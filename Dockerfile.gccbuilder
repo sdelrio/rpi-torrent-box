@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=resin/rpi-raspbian:stretch
+ARG BASE_IMAGE=resin/rpi-raspbian:jessie
 
 FROM $BASE_IMAGE
 

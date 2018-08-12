@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=resin/rpi-raspbian:stretch
+ARG BASE_IMAGE=resin/rpi-raspbian:jessie
 
 FROM $BASE_IMAGE
 
@@ -7,7 +7,7 @@ USER root
 # For ffmpeg, which is required by the ruTorrent screenshots plugin
 # This increases ~53 MB of the image size, remove it if you really don't need screenshots
 
-RUN echo "deb http://www.deb-multimedia.org stretch main" >> /etc/apt/sources.list && \
+RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.list && \
     apt-get update && apt-get install -q -y --force-yes --no-install-recommends \
     deb-multimedia-keyring \
     ffmpeg
