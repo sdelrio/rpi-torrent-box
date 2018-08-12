@@ -42,7 +42,7 @@ curl:
 xmlrpc:
 	@set -e;
 	@echo Begin compiling xmlrpc
-	svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ ./build/xmlrpc-c
+	svn --quiet --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ ./build/xmlrpc-c
 	docker run -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_xmlrpc.sh
 
 .PHONY: libtorrent

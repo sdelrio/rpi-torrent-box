@@ -7,6 +7,9 @@ ls
 
 # PREPARE NEEDED LIBS
 
+export CFLAGS="-w ${CFLAGS}"
+export CXXFLAGS="${CFLAGS}"
+
 echo - Installing curl-$CURL_VERSION
 ls curl-$CURL_VERSION
 cd curl-$CURL_VERSION && make install V=0 > /dev/null

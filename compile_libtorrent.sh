@@ -3,6 +3,10 @@ set -e
 
 echo - Begin compile libtorrent-$VER_LIBTORRENT
 cd libtorrent-$VER_LIBTORRENT
+
+export CFLAGS="-w ${CFLAGS}"
+export CXXFLAGS="${CFLAGS}"
+
 echo - Autogent compile libtorrent-$VER_LIBTORRENT
 ./autogen.sh
 echo - Configure compile libtorrent-$VER_LIBTORRENT
