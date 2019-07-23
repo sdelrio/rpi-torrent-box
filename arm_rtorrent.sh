@@ -3,7 +3,7 @@ set -e
 set -x
 
 IMAGE=sdelrio/arm-rtorrent-copy
-BUILDER_BASE= balenalib/raspberry-pi2-debian:jessie
+BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
 
 if docker pull $IMAGE ; then
     echo - Getting arm rtorrent from previous build
