@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=resin/rpi-raspbian:jessie
+ARG BASE_IMAGE=balenalib/raspberry-pi2-debian:jessie
 
 FROM $BASE_IMAGE
 
