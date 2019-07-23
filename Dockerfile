@@ -44,10 +44,10 @@ WORKDIR /usr/local/src
 
 # Compile rtorrent based on VER_RTORRENT and VER_LIBTORRENT
 
-COPY rtorrent/compiletorrent.sh /usr/local/src/compiletorrent.sh 
+COPY rtorrent/compiletorrent.sh /usr/local/src/compiletorrent.sh
 RUN /usr/local/src/compiletorrent.sh
 
-# Download base for ruTorrent 
+# Download base for ruTorrent
 
 COPY rutorrent/getrutorrent.sh /usr/local/src/getrutorrent.sh
 RUN /usr/local/src/getrutorrent.sh

@@ -19,6 +19,7 @@ RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.lis
 
 ENV CURL_VERSION 7.39.0
 ENV CURL_LIB libcurl.so.4.3.0
+ENV GEO_URL https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config  /usr/local/bin/
 COPY build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB} /usr/local/lib/${CURL_LIB}
@@ -29,7 +30,7 @@ RUN curl --version && \
     ls -l /usr/local/bin/curl && \
     gunzip -V && \
     ldd /usr/local/bin/curl  && \
-    curl http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz > GeoLiteCity.dat.gz && \
+    curl ${GEO_URL} > GeoLiteCity.dat.gz && \
     gunzip GeoLiteCity.dat.gz && \
     ls -l && \
     ls /usr/share && \
