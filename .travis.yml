@@ -19,7 +19,7 @@ jobs:
     - DESC=ARM_CURL
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
-    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
@@ -36,7 +36,7 @@ jobs:
     - DESC=ARM_XMLRPC
     - TAG=$(grep "ENV VER_BOX" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
-    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
@@ -76,7 +76,7 @@ jobs:
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
-    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG
@@ -105,7 +105,7 @@ jobs:
     - VER_LIBTORRENT=$(grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $NF}')
     - CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
     - PACK_IMAGENAME=sdelrio/rpi-torrent-box
-    - BUILDER_BASE=resin/rpi-raspbian:jessie
+    - BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
     - GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     script:
     - echo VERSION TAG $TAG

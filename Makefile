@@ -1,7 +1,7 @@
 BUILDER_BASE ?= "debian:jessie-slim"
 GCCBUILDER_IMAGENAME ?= "sdelrio/gccbuilder"
 PACK_IMAGENAME ?= "sdelrio/rtorrent-box"
-ARM_PACK_IMAGE := "resin/rpi-raspbian:jessie"
+ARM_PACK_IMAGE := "balenalib/raspberry-pi2-debian:jessie"
 CURL_VERSION = $(shell grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $$NF}')
 CURL_LIB = $(shell grep "ENV CURL_LIB" Dockerfile.pack | awk 'NF>1{print $$NF}')
 VER_LIBTORRENT = $(shell grep "ENV VER_LIBTORRENT" Dockerfile.pack | awk 'NF>1{print $$NF}')

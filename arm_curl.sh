@@ -3,13 +3,14 @@ set -e
 
 IMAGE=sdelrio/arm-curl-copy
 CURL_VERSION=$(grep "ENV CURL_VERSION" Dockerfile.pack | awk 'NF>1{print $NF}')
+BUILDER_BASE=balenalib/raspberry-pi2-debian:jessie
 
 if docker pull $IMAGE ; then
     echo - Getting arm curl from previous build
 else
 
     mkdir build/curl-$CURL_VERSION
-    make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=resin/rpi-raspbian:jessie GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
+    make curl PACK_IMAGENAME=sdelrio/rpi-torrent-box BUILDER_BASE=$BUILDER_BASE GCCBUILDER_IMAGENAME=sdelrio/rpi-gccbuilder
     docker build --build-arg CURL_VERSION=$CURL_VERSION -t $IMAGE . -f -<<EOF
 FROM busybox
 COPY ./build/curl-$CURL_VERSION /copy
