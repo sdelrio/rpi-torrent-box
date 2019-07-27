@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 # Get version from Novkc github
-VERSION=v3.9
-
+VERSION=v3.10-beta
 mkdir -p /usr/share/nginx/html
 cd /usr/share/nginx/html
 mkdir rutorrent
