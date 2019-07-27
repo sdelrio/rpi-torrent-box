@@ -19,7 +19,8 @@ RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.lis
 
 ENV CURL_VERSION 7.39.0
 ENV CURL_LIB libcurl.so.4.3.0
-ENV GEO_URL https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+# https://www.miyuru.lk/geoiplegacy
+ENV GEO_URL https://dl.miyuru.lk/geoip/maxmind/city/maxmind4.dat.gz
 
 COPY build/curl-${CURL_VERSION}/src/.libs/curl build/curl-${CURL_VERSION}/curl-config  /usr/local/bin/
 COPY build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB} /usr/local/lib/${CURL_LIB}
