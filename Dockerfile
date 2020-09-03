@@ -33,6 +33,12 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 RUN apt-get update && \
     apt-get install -y --force-yes unzip unrar-free mediainfo curl wget supervisor sox
 
+
+# Raise file limits for php
+RUN sed -i 's/post_max_size = 8M/post_max_size = 30M/' /etc/php5/fpm/php.ini && \
+    sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 25M/' /etc/php5/fpm/php.ini &&
+    sed -i 's/max_file_uploads = 20/max_file_uploads = 75/' /etc/php5/fpm/php.ini
+
 # Make rtorrent from sources
 
 ENV VERSION 1.20
