@@ -13,7 +13,7 @@ make install && \
 cd .. && \
 rm -rf curl-* && \
 ldconfig && \
-svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.42.02/ xmlrpc-c && \
+svn --non-interactive --trust-server-cert checkout https://svn.code.sf.net/p/xmlrpc-c/code/release_number/01.58.00/ xmlrpc-c && \
 cd xmlrpc-c && \
 ./configure --enable-libxml2-backend --disable-abyss-server --disable-cgi-server && \
 make -j -l2 && \
@@ -21,7 +21,7 @@ make install && \
 cd .. && \
 rm -rf xmlrpc-c && \
 ldconfig && \
-wget -O libtorrent-$VER_LIBTORRENT.tar.gz https://github.com/rakshasa/libtorrent/archive/$VER_LIBTORRENT.tar.gz && \
+wget -O libtorrent-$VER_LIBTORRENT.tar.gz http://rtorrent.net/downloads/libtorrent-$VER_LIBTORRENT.tar.gz && \
 tar xzf libtorrent-$VER_LIBTORRENT.tar.gz && \
 cd libtorrent-$VER_LIBTORRENT && \
 ./autogen.sh && \
@@ -31,7 +31,7 @@ make install && \
 cd .. && \
 rm -rf libtorrent-* && \
 ldconfig && \
-wget -O rtorrent-$VER_RTORRENT.tar.gz https://github.com/rakshasa/rtorrent/archive/$VER_RTORRENT.tar.gz && \
+wget -O rtorrent-$VER_RTORRENT.tar.gz http://rtorrent.net/downloads/rtorrent-$VER_RTORRENT.tar.gz && \
 tar xzf rtorrent-$VER_RTORRENT.tar.gz && \
 cd rtorrent-$VER_RTORRENT && \
 ./autogen.sh && \
