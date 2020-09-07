@@ -1,16 +1,29 @@
-ARG BASE_IMAGE=resin/rpi-raspbian:jessie
+ARG BASE_IMAGE=balenalib/rpi-raspbian:stretch
 
 FROM $BASE_IMAGE
 
 USER root
 
+# Add support for https downloads during the build
+
+RUN apt-get update && apt-get install apt-transport-https ca-certificates
+
 # For ffmpeg, which is required by the ruTorrent screenshots plugin
 # This increases ~53 MB of the image size, remove it if you really don't need screenshots
 
-RUN echo "deb http://www.deb-multimedia.org jessie main" >> /etc/apt/sources.list && \
-    apt-get update && apt-get install -q -y --force-yes --no-install-recommends \
+RUN echo "deb http://www.deb-multimedia.org stretch main" >> /etc/apt/sources.list && \
+    apt-get update && apt-get install -q -y --force-yes \
     deb-multimedia-keyring \
+    libavcodec57 \
+    libavdevice57 \
+    libavfilter6 \
+    libavformat57 \
+    libsdl2-2.0-0 \
+    libopenh264-2 \
+    libsnappy1v5 \
+    libvpx4 \
     ffmpeg
+
 
 # Install web server, packages and create ssl certificate
 
@@ -20,10 +33,10 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     apache2-utils \
     libc-ares2 \
     nginx \
-    php5-cli \
-    php5-fpm \
+    php7.0-cli \
+    php7.0-fpm \
     geoip-database \
-    php5-geoip && \
+    php7.0-geoip && \
     update-rc.d nginx remove && \
     openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout /etc/ssl/private/rutorrent.key -out /etc/ssl/private/rutorrent.crt -subj /CN=rutorrent && \
     chmod 600 /etc/ssl/private/rutorrent.key
@@ -34,17 +47,12 @@ RUN apt-get update && \
     apt-get install -y --force-yes unzip unrar-free mediainfo curl wget supervisor sox
 
 
-# Raise file limits for php
-RUN sed -i 's/post_max_size = 8M/post_max_size = 30M/' /etc/php5/fpm/php.ini && \
-    sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 25M/' /etc/php5/fpm/php.ini &&
-    sed -i 's/max_file_uploads = 20/max_file_uploads = 75/' /etc/php5/fpm/php.ini
-
 # Make rtorrent from sources
 
 ENV VERSION 1.20
-ENV VER_LIBTORRENT 0.13.6
-ENV VER_RTORRENT 0.9.6
-ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion wget"
+ENV VER_LIBTORRENT 0.13.8
+ENV VER_RTORRENT 0.9.8
+ENV build_deps="automake build-essential ca-certificates libc-ares-dev libcppunit-dev libtool libssl-dev libxml2-dev libncurses5-dev pkg-config subversion wget zlib1g-dev zlib1g"
 
 WORKDIR /usr/local/src
 
@@ -78,6 +86,11 @@ COPY nginx/config/rutorrent.conf     /etc/nginx/sites-enabled/default
 COPY nginx/config/rutorrent-ssl.conf /etc/nginx/sites-enabled/tls
 COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 
+# Base configuration for php
+
+COPY php/config/php.ini /etc/php7.0/fpm/php.ini
+RUN mkdir -p /run/php
+
 # Configure rtorrent user
 
 RUN useradd -d /home/rtorrent -m -s /bin/bash rtorrent
@@ -85,13 +98,13 @@ RUN chown -R rtorrent:rtorrent /home/rtorrent
 
 # Geo Codes
 
-RUN curl -LOks http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip GeoLiteCity.dat.gz && \
-    mkdir -p /usr/share/GeoIP && mv GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
+RUN curl -LOks https://dl.miyuru.lk/geoip/maxmind/city/maxmind.dat.gz && gunzip maxmind.dat.gz && \
+    mkdir -p /usr/share/GeoIP && mv maxmind.dat /usr/share/GeoIP/GeoIPCity.dat
 
 # Cleanup repositories
 
 RUN rm -rf /var/lib/apt/lists/*
-RUN apt-get purge -y --auto-remove ${build_deps} && apt-get autoremove -y
+RUN apt-get autoremove -y
 
 # Configure supervisor
 
