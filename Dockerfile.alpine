@@ -182,7 +182,7 @@ COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 
 ## Configure supervisor
 
-ADD supervisord/supervisord.conf /etc/supervisor/supervisord.conf
+ADD supervisord/supervisord-php5.conf /etc/supervisor/supervisord.conf
 
 ENV VERSION 1.20
 
