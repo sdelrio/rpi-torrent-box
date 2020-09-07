@@ -15,7 +15,7 @@ echo - Configure compile libtorrent-$VER_LIBTORRENT
 
 #export CFLAGS="-O2 ${CFLAGS}"
 #export CXXFLAGS="${CFLAGS}"
-make V=0
+make V=0 --jobs $(nproc) -l$(nproc)
 
 echo - Finish compile libtorrent-$VER_LIBTORRENT
 

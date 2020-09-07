@@ -11,19 +11,34 @@ TMP_CURLFILE = ".tmp/curl.tar.gz"
 
 # If nothing was specified, run all targets as if in a fresh clone
 .PHONY: all
-## Default target
+
+.DEFAULT: help
+help:	## Show this help menu.
+	@echo "Usage: make [TARGET ...]"
+	@echo ""
+	@egrep -h "#[#]" $(MAKEFILE_LIST) | sed -e 's/\\$$//' | awk 'BEGIN {FS = "[:=].*?#[#] "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+
+# Default target
+all:	## cleanup, build docker, xmlrpc, libtorrent, rorrent and pack
 all: init curl xmlrpc libtorrent rtorrent pack
-.PHONY: init
-init:
+
+clear:	## Clean build/ dir and copy build scripts inside
+clear:
 	@echo "Cleaning build dir"
-	@rm -rf .tmp
-	@rm -rf build
-	@mkdir .tmp
-	@mkdir build
+	@sudo rm -rf .tmp
+	@sudo rm -rf build
+
+.PHONY: init
+init:	## Clean build/ dir and copy build scripts inside
+init:
+	@mkdir -p .tmp
+	@mkdir -p build
 	@cp compile_*sh build/
 	@echo "Initialited build dir"
 
 .PHONY: builder
+builder:	## Create GCC builder container
 builder:
 	@set -e;
 	@echo BASE_IMAGE=$(BUILDER_BASE)
@@ -31,6 +46,7 @@ builder:
 	docker build --build-arg BASE_IMAGE=$(BUILDER_BASE) -t $(GCCBUILDER_IMAGENAME) -f Dockerfile.gccbuilder .
 
 .PHONY: curl
+curl:	## Compile curl binary using GCC builder image
 curl:
 	@set -e;
 	echo CURL_VERSION=$(CURL_VERSION)
@@ -40,6 +56,7 @@ curl:
 	ls -l $(PWD)/build/curl-$(CURL_VERSION)/src/curl
 
 .PHONY: xmlrpc
+xmlrpc:	## Compile xmlrpc binaries using GCC builder image
 xmlrpc:
 	@set -e;
 	@echo Begin compiling xmlrpc
@@ -47,6 +64,7 @@ xmlrpc:
 	docker run -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_xmlrpc.sh
 
 .PHONY: libtorrent
+libtorrent:	## Compile libtorrent binaries using GCC builder image
 libtorrent:
 	@set -e;
 	echo VER_LIBTORRENT=$(VER_LIBTORRENT)
@@ -55,6 +73,7 @@ libtorrent:
 	docker run -ti -e VER_LIBTORRENT=$(VER_LIBTORRENT) -v $(PWD)/build/:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_libtorrent.sh
 
 .PHONY: rtorrent
+rtorrent:	## Compile rtorrent binaries using GCC builder image
 rtorrent:
 	@set -e;
 	echo VER_RTORRENT=$(VER_RTORRENT)
@@ -70,6 +89,7 @@ rtorrent:
 -ti -v $(PWD)/build:/usr/local/src --rm $(GCCBUILDER_IMAGENAME) ./compile_rtorrent.sh
 
 .PHONY: pack
+pack:	## Generate docker image packing curl, libxmlrpc, libtorrent, rtorrent, php and nginx
 pack:
 	ls -la build/curl-${CURL_VERSION}/src/.libs/curl
 	ls -la build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB}
@@ -78,7 +98,9 @@ pack:
 	docker tag $(PACK_IMAGENAME) $(PACK_IMAGENAME):v$(VER_BOX)
 
 .PHONY: push
+push:	## push image to docker registry
 push:
 	@set -e;
 	@set -x;
 	docker push $(PACK_IMAGENAME):v$(VER_BOX)
+
