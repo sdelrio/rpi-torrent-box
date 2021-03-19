@@ -5,7 +5,7 @@
 # https://github.com/rakshasa/rtorrent/wiki/rTorrent-0.9-Comprehensive-Command-list-(WIP)
 # https://github.com/rakshasa/rtorrent/blob/master/doc/rtorrent.rc
 
-scgi_port=127.0.0.1:5000
+network.scgi.open_port = 127.0.0.1:5000
 encoding_list = UTF-8
 
 # Maximum and minimum number of peers to connect to per torrent while downloading (`min_peers`, `max_peers`) Default: `100` and `200` respectively
