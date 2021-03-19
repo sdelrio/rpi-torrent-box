@@ -13,13 +13,15 @@ fi
 # change listening port if env $RTORRENT_PORT is set
 
 if [ "$RTORRENT_PORT" ]; then
-    sed -i "s/^port_range.*$/port_range=${RTORRENT_PORT}-${RTORRENT_PORT}/" /rtorrent/.rtorrent.rc
+    sed -i "s/^port_range.*$/network.port_range.set=${RTORRENT_PORT}-${RTORRENT_PORT}/" /rtorrent/.rtorrent.rc
+    sed -i "s/^network\.port_range\.set.*$/network.port_range.set=${RTORRENT_PORT}-${RTORRENT_PORT}/" /rtorrent/.rtorrent.rc
 fi
 
 # change listening port if env $RTORRENT_DHT is set
 
 if [ "$RTORRENT_DHT" ]; then
-    sed -i "s/^dht_port.*$/dht_port=${RTORRENT_DHT}/" /rtorrent/.rtorrent.rc
+    sed -i "s/^dht_port.*$/dht.port.set=${RTORRENT_DHT}/" /rtorrent/.rtorrent.rc
+    sed -i "s/^dht\.port\.set\.*$/dht.port.set=${RTORRENT_DHT}/" /rtorrent/.rtorrent.rc
 fi
 
 # clean lock file
