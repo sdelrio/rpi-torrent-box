@@ -4,7 +4,10 @@ FROM $BASE_IMAGE
 
 USER root
 
-RUN echo "deb ftp://www.deb-multimedia.org jessie main" >> /etc/apt/sources.list && \
+RUN apt-get update && \
+    apt-get install -y apt-transport-https ca-certificates && \
+    echo "deb https://www.deb-multimedia.org jessie main" >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyring.debian.org --recv-keys 5C808C2B65558117 && \
     apt-get update -oAcquire::AllowInsecureRepositories=true && \
     apt-get install -y --force-yes deb-multimedia-keyring && \
     apt-get install -y libc-ares2 libssl1.0.0 libxml2 libcppunit-1.13-0 && \
@@ -183,7 +186,7 @@ COPY nginx/config/nginx.conf         /etc/nginx/nginx.conf
 
 ADD supervisord/supervisord-php5.conf /etc/supervisor/supervisord.conf
 
-ENV VER_BOX 1.89
+ENV VER_BOX 1.90
 
 # Ports
 
