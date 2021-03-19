@@ -94,7 +94,7 @@ pack:
 	ls -la build/curl-${CURL_VERSION}/src/.libs/curl
 	ls -la build/curl-${CURL_VERSION}/lib/.libs/${CURL_LIB}
 	echo BASE_IMAGE=$(BUILDER_BASE)
-	docker build --progress=plain --build-arg BASE_IMAGE=$(BUILDER_BASE) -t $(PACK_IMAGENAME) -f Dockerfile.pack .
+	docker build --build-arg BASE_IMAGE=$(BUILDER_BASE) -t $(PACK_IMAGENAME) -f Dockerfile.pack .
 	docker tag $(PACK_IMAGENAME) $(PACK_IMAGENAME):v$(VER_BOX)
 
 .PHONY: push
